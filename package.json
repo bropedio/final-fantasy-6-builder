@@ -1,0 +1,14 @@
+{
+  "name": "ff6-builder",
+  "version": "0.0.1",
+  "description": "\"Tool for inspecting and modifying various data in FF6\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Bropedio",
+  "license": "ISC",
+  "dependencies": {
+
+  }
+}
