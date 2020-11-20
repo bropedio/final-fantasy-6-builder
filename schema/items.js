@@ -380,7 +380,6 @@ class Items extends JSONer {
       name: 'Name',
       type: new Reader({
         offset: 0xD2B300,
-        warn: 0xFFFFFF,
         type: new List({
           size: 255,
           type: new Text(13, table)
@@ -390,11 +389,10 @@ class Items extends JSONer {
       name: 'Description',
       type: new Reader({
         offset: 0xED7AA0,
-        warn: 0xFFFFFF,
         type: new PointerTable({
-          size: 0xFF,
+          size: 0x100,
           offset: 0xED6400,
-          warn: 0xFFFFFF,
+          warn: 0xED77A0,
           type: new TextLong(table)
         })
       })
@@ -402,7 +400,6 @@ class Items extends JSONer {
       name: 'Data',
       type: new Reader({
         offset: 0xD85000,
-        warn: 0xD90000,
         type: item_data
       })
     }]);

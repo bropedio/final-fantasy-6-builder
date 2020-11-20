@@ -138,7 +138,6 @@ class Spells extends JSONer {
         name: 'MagicNames',
         type: new Reader({
           offset: 0xE6F567,
-          warn: 0xFFFFFF,
           type: new List({
             size: 54,
             type: new Text(7, table)
@@ -148,7 +147,6 @@ class Spells extends JSONer {
         name: 'EsperNames',
         type: new Reader({
           offset: 0xE6F6E1,
-          warn: 0xFFFFFF,
           type: new List({
             size: 27,
             type: new Text(8, table)
@@ -158,7 +156,6 @@ class Spells extends JSONer {
         name: 'MiscSpellNames',
         type: new Reader({
           offset: 0xE6F7B9,
-          warn: 0xFFFFFF,
           type: new List({
             size: 4,
             type: new Text(10, table)
@@ -168,7 +165,6 @@ class Spells extends JSONer {
         name: 'BushidoNames',
         type: new Reader({
           offset: 0xCF3C40,
-          warn: 0xFFFFFF,
           type: new List({
             size: 8,
             type: new Text(12, table)
@@ -179,7 +175,6 @@ class Spells extends JSONer {
         name: 'EnemySkillNames',
         type: new Reader({
           offset: 0xE6F831,
-          warn: 0xFFFFFF,
           type: new List({
             size: 162,
             type: new Text(10, table)
@@ -192,11 +187,10 @@ class Spells extends JSONer {
         name: 'Magic',
         type: new Reader({
           offset: 0xD8CF80,
-          warn: 0xFFFFFF,
           type: new PointerTable({
             size: 54,
             offset: 0xD8C9A0,
-            warn: 0xFFFFFF,
+            warn: 0xD8CEA0,
             type: new TextLong(table)
           })
         })
@@ -204,11 +198,10 @@ class Spells extends JSONer {
         name: 'Espers',
         type: new Reader({
           offset: 0xCFFE40,
-          warn: 0xFFFFFF,
           type: new PointerTable({
             size: 27,
             offset: 0xCF3940,
-            warn: 0xFFFFFF,
+            warn: 0xCF3C40,
             type: new TextLong(table)
           })
         })
@@ -222,11 +215,10 @@ class Spells extends JSONer {
         name: 'Bushido',
         type: new Reader({
           offset: 0xCFFFAE,
-          warn: 0xFFFFFF,
           type: new PointerTable({
             size: 8,
             offset: 0xCFFD00,
-            warn: 0xFFFFFF,
+            warn: 0xCFFE00,
             type: new TextLong(table)
           })
         })
@@ -234,11 +226,10 @@ class Spells extends JSONer {
         name: 'Blitz',
         type: new Reader({
           offset: 0xCFFF9E,
-          warn: 0xFFFFFF,
           type: new PointerTable({
             size: 8,
             offset: 0xCFFC00,
-            warn: 0xFFFFFF,
+            warn: 0xCFFD00,
             type: new TextLong(table)
           })
         })
@@ -252,11 +243,10 @@ class Spells extends JSONer {
         name: 'Lore',
         type: new Reader({
           offset: 0xED7A70,
-          warn: 0xFFFFFF,
           type: new PointerTable({
-            size: 12,
+            size: 12, // space for 24?
             offset: 0xED77A0,
-            warn: 0xFFFFFF,
+            warn: 0xED7A70,
             type: new TextLong(table)
           })
         })
@@ -265,7 +255,6 @@ class Spells extends JSONer {
       name: 'Data',
       type: new Reader({
         offset: 0xC46AC0,
-        warn: 0xFFFFFF,
         type: spell_data
       })
     }]);

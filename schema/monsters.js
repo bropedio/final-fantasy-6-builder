@@ -21,7 +21,6 @@ class Monsters extends JSONer {
       name: 'Name',
       type: new Reader({
         offset: 0xCFC050,
-        warn: 0xFFFFFF, // TODO
         type: new List({
           size: 383,
           type: new Text(10, name_table)

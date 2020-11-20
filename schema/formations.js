@@ -16,7 +16,6 @@ class Formations extends JSONer {
 
     this.type = new Reader({
       offset: 0xCF6200,
-      warn: 0xCFFFFF,
       type: new List({
         size: 0x240,
         type: new Struct([{

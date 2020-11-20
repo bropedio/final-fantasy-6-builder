@@ -20,7 +20,6 @@ class Script extends Closure {
 
     this.type = new Reader({
       offset: 0xCCE600,
-      warn: 0xCEF100,
       type: new PointerWrapTable({
         size: 3085,
         offset: 0xCD0000,
@@ -129,7 +128,6 @@ class CharWidths extends JSONer {
 
     this.type = new Reader({
       offset: 0xC48FC0,
-      warn: 0xCFFFFF,
       type: new List({
         size: 0x80,
         type: new UInt()

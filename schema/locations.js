@@ -21,11 +21,10 @@ class Locations extends JSONer {
       name: 'Name',
       type: new Reader({
         offset: 0xE68400, 
-        warn: 0xFFFFFF,
         type: new PointerTable({
           size: 73,
           offset: 0xCEF100,
-          warn: 0xCEF384,
+          warn: 0xCEF390, // Note: lots of empty space after here...
           type: new DTEText({
             dtes: fetch('dtes'),
             table: script_table

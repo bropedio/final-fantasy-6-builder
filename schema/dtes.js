@@ -17,7 +17,6 @@ class DTEs extends JSONer {
 
     this.type = new Reader({
       offset: 0xC0DFA0,
-      warn: 0xC0E0A0,
       type: new List({
         size: 128,
         type: new List({
