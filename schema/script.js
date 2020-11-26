@@ -2,7 +2,7 @@
 
 const {
   Reader,
-  PointerWrapTable,
+  PointerTable,
   DTEText,
   Closure,
   JSONer
@@ -20,7 +20,7 @@ class Script extends Closure {
 
     this.type = new Reader({
       offset: 0xCCE600,
-      type: new PointerWrapTable({
+      type: new PointerTable({
         size: 3085,
         offset: 0xCD0000,
         wrap: 0xCE0000,
