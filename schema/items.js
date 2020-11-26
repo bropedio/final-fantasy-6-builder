@@ -390,7 +390,7 @@ class Items extends JSONer {
       type: new Reader({
         offset: 0xED7AA0,
         type: new PointerTable({
-          size: 0x100,
+          size: 0xFF,
           offset: 0xED6400,
           warn: 0xED77A0,
           type: new TextLong(table)
