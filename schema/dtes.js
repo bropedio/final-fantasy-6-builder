@@ -32,6 +32,7 @@ class DTEs extends JSONer {
     const locations = fetch('locations').Name;
     const chars = dialogues.concat(locations).flat().map(obj => obj.id);
     const dte_map = {};
+    const bar = new ProgressBar({ length: 32, ticks: 0x80 }); 
 
     while (Object.keys(dte_map).length < 0x80) {
       let pairs = {};
@@ -59,11 +60,40 @@ class DTEs extends JSONer {
       });
 
       dte_map[keys[0]] = true;
+      bar.tick();
     }
 
     return Object.keys(dte_map).map(key => {
       return JSON.parse(key);
     });
+  }
+}
+
+class ProgressBar {
+  constructor (input) {
+    this.length = input.length;
+    this.ticks = input.ticks;
+    this.progress = 0;
+    process.stdout.write('Progress: [');
+  }
+  remaining () {
+    return this.length - Math.floor(this.length * this.progress / this.ticks);
+  }
+  tick () {
+    const pre_remain = this.remaining();
+
+    if (pre_remain > 0) {
+      this.progress++;
+      const new_remain = this.remaining();
+
+      if (new_remain < pre_remain) {
+        process.stdout.write('#');
+
+        if (new_remain === 0) {
+          process.stdout.write(']\n');
+        }
+      }
+    }
   }
 }
 
