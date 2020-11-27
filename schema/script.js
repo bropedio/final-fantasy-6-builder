@@ -3,11 +3,11 @@
 const {
   Reader,
   PointerTable,
-  DTEText,
   Closure,
   JSONer
 } = require('rom-builder').types;
 
+const DTEText = require('./lib/dte_text');
 const script_table = require('./lib/script_table');
 
 /* Script */

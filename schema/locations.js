@@ -5,10 +5,10 @@ const {
   ParallelList,
   Reader,
   PointerTable,
-  DTEText,
   Getter
 } = require('rom-builder').types;
 
+const DTEText = require('./lib/dte_text');
 const script_table = require('./lib/script_table');
 
 /* Locations */
