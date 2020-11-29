@@ -81,7 +81,7 @@ class Spells extends JSONer {
             0x02: 'Unreflectable',
             0x04: 'Learnable Lore',
             0x08: 'Runicable',
-            0x10: '---',
+            0x10: 'Warps',
             0x20: 'Retarget if Invalid',
             0x40: 'Suicidal',
             0x80: 'MP Damage'
