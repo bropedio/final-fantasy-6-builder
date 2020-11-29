@@ -2,15 +2,21 @@
 
 const {
   Text,
+  Bool,
+  Bitmask,
+  Bits,
+  UInt,
   List,
   Reader,
   ParallelList,
+  Struct,
   JSONer
 } = require('rom-builder').types;
 
 const AIReader = require('./lib/ai');
 const name_table = require('./lib/name_table');
 const statuses = require('./lib/statuses');
+const elements = require('./lib/elements');
 
 /* Monsters */
 

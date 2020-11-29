@@ -2,6 +2,7 @@ const {
   Empty,
   UInt,
   Char,
+  Fork,
   List,
 } = require('rom-builder').types;
 
