@@ -3,6 +3,7 @@
 const {
   JSONer,
   Reader,
+  Struct,
   Grid,
   Closure
 } = require('rom-builder').types;
@@ -31,23 +32,21 @@ class Overworld extends Closure {
       })
     });
 
-    this.type = new Struct({
-      fields: [{
-        name: 'World of Balance',
-        type: new Reader({
-          offset: 0xEED434,
-          warn: 0xEF114F,
-          type: lzss_grid
-        })
-      }, {
-        name: 'World of Ruin',
-        type: new Reader({
-          offset: 0xEF6A56,
-          warn: 0xEF9D17,
-          type: lzss_grid
-        })
-      }]
-    });
+    this.type = new Struct([{
+      name: 'World of Balance',
+      type: new Reader({
+        offset: 0xEED434,
+        warn: 0xEF114F,
+        type: lzss_grid
+      })
+    }, {
+      name: 'World of Ruin',
+      type: new Reader({
+        offset: 0xEF6A56,
+        warn: 0xEF9D17,
+        type: lzss_grid
+      })
+    }]);
   }
   parse (string) {
     let data = {};
