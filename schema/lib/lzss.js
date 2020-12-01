@@ -31,7 +31,8 @@ class LZSS {
         let match_length = (info >>> 11) + 3;
 
         while (match_length--) {
-          add_data(dictionary[match_index++]); 
+          add_data(dictionary[match_index & 0x7FF]);
+          match_index++;
         }
       }
 
