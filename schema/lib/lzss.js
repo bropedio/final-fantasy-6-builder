@@ -44,7 +44,7 @@ class LZSS {
   }
   encode (source_data, rom) {
     const length_offset = rom.offset();
-    rom.offset(rom.offset() + 2);
+    rom.offset(length_offset + 2);
 
     const buffer_offset = 0x7DE;
     const dictionary = new Uint8Array(0x800 + source_data.length);
@@ -52,10 +52,12 @@ class LZSS {
     dictionary.set(source_data, 0x800);
     let dictionary_index = 0x800;
     let control_offset, control, bitmask;
+
     refresh_control();
 
     function refresh_control () {
       control_offset = rom.offset();
+      rom.offset(control_offset + 1);
       control = 0x00;
       bitmask = 0x01;
     }
@@ -85,7 +87,7 @@ class LZSS {
       for (let shift = 1; shift <= 0x800; shift++) {
         let match_length = 0;
 
-        while (match_length <= max_length) {
+        while (match_length < max_length) {
           let source_byte = dictionary[dictionary_index + match_length];
           let match_byte = dictionary[dictionary_index + match_length - shift];
           if (source_byte !== match_byte) break;
@@ -118,6 +120,7 @@ class LZSS {
     }
 
     const full_length = rom.offset() - length_offset;
+    console.log(`LZSS Compression: ${source_data.length} => ${full_length}`);
     rom.jsr(length_offset, () => rom.write(full_length, 'word'));
   }
   parse (json) {
@@ -128,7 +131,7 @@ class LZSS {
     if (this.type) return this.type.format(data);
 
     return data.reduce((string, byte, i) => {
-      const pad = i && i % 0x10 === 0 ? '\n' : i && i % 0x02 === 0 ? ' ' : '';
+      const pad = i && i % 0x40 === 0 ? '\n' : i && i % 0x02 === 0 ? ' ' : '';
       return string + pad + byte.toString(16).padStart(2, '0');
     }, '');
   }

@@ -23,7 +23,8 @@ class WorldGraphics extends Closure {
         type: new Grid({
           height: height,
           width: width || height,
-          mapper: (num) => {
+          mapper: (num, reverse) => {
+            if (reverse) return parseInt(num, 16);
             return num.toString(16).padStart(2, '0');
 
             /*
@@ -72,9 +73,11 @@ class WorldGraphics extends Closure {
           type: new Empty()
         }, {
           name: 'Mine Cart Palettes',
-          type: new List({
-            size: 0x200,
-            type: new UInt('word')
+          type: new JSONer({
+            type: new List({
+              size: 0x200,
+              type: new UInt('word')
+            })
           })
         }, {
           name: 'World of Ruin Graphics', // TODO: Handle swap via USME?
