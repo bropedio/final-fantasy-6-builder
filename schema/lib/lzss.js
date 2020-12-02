@@ -2,7 +2,7 @@
 
 class LZSS {
   constructor (input) {
-    this.type = input.type;
+    this.type = input && input.type;
   }
   decode (rom) {
     const end_offset = rom.offset() + rom.read('word');
@@ -121,10 +121,16 @@ class LZSS {
     rom.jsr(length_offset, () => rom.write(full_length, 'word'));
   }
   parse (json) {
-    return this.type.parse(json);
+    if (this.type) return this.type.parse(json);
+    return json.match(/\w\w/g).map(pair => parseInt(pair, 16));
   }
   format (data) {
-    return this.type.format(data);
+    if (this.type) return this.type.format(data);
+
+    return data.reduce((string, byte, i) => {
+      const pad = i && i % 0x10 === 0 ? '\n' : i && i % 0x02 === 0 ? ' ' : '';
+      return string + pad + byte.toString(16).padStart(2, '0');
+    }, '');
   }
 }
 
