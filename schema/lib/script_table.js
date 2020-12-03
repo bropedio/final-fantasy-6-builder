@@ -14,8 +14,6 @@ module.exports = (function build_table () {
   }
   
   add_group(0x00, [
-    '[end]',
-    '[line]',
     '{Terra}',
     '{Locke}',
     '{Cyan}',
@@ -31,11 +29,6 @@ module.exports = (function build_table () {
     '{Gogo}',
     '{Umaro}'
   ]);
-
-  add_group(0x10, ['[pause]']);
-  add_group(0x12, ['[frame]']);
-  add_group(0x13, ['[page]']);
-  add_group(0x15, ['[choice]']);
 
   add_group(0x19, [
     '{GP}',

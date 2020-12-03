@@ -12,8 +12,7 @@ const {
   PointerTable,
   Reader,
   Bitmask,
-  Closure,
-  Rewind
+  Closure
 } = require('rom-builder').types;
 
 /* Extra Type Definitions */
@@ -152,10 +151,8 @@ class AIReader extends Closure {
         map: {
           default: {
             name: 'Use Spell',
-            type: new Rewind({
-              steps: 1,
-              type: new UInt() /*spell_enum*/
-            })
+            use_control: true,
+            type: new UInt() /*spell_enum*/
           },
           0xF0: {
             name: 'Use Random Spell',
