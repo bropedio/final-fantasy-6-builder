@@ -1,9 +1,8 @@
 const {
   Empty,
   UInt,
-  Char,
-  Fork,
   List,
+  TextScript
 } = require('rom-builder').types;
 
 // TODO: Fix validation for line length. Or just change asm
@@ -17,7 +16,7 @@ class DTEToken {
     ];
   }
   decode (rom) {
-    return value;
+    return this.value;
   }
   encode () {}
   parse () {}
@@ -52,7 +51,7 @@ class DTEText extends TextScript {
           type: new Empty()
         },
         0x01: {
-          name 'line',
+          name: 'line',
           type: new Empty()
         },
         0x10: {
