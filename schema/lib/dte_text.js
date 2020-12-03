@@ -60,7 +60,7 @@ class DTEText extends TextScript {
         },
         0x11: {
           name: 'wait',
-          type: new UInt()
+          type: new UInt('byte', 10)
         },
         0x12: {
           name: 'frame',
@@ -72,7 +72,7 @@ class DTEText extends TextScript {
         },
         0x14: {
           name: 'pad',
-          type: new UInt()
+          type: new UInt('byte', 10)
         },
         0x15: {
           name: 'choice',
@@ -80,7 +80,7 @@ class DTEText extends TextScript {
         },
         0x16: {
           name: 'keyframes',
-          type: new UInt()
+          type: new UInt('byte', 10)
         },
         ...dte_options
       }
