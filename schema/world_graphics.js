@@ -32,7 +32,22 @@ class WorldGraphics extends Closure {
                 06: Ocean
                 18: Grassland
                 1E: Desert
-                4E: Forest
+                22: Mountain
+
+                Forest:
+                3D 3E 3F
+                4D 4E 4F
+                5D 5E 5F
+
+                Mountain:
+                .. .. ..
+                .. 22 23 24
+                .. 32 33
+                   42
+
+                Mountain Peak:
+
+
             */
           }
         })
