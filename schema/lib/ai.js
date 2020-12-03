@@ -145,7 +145,7 @@ class AIReader extends Closure {
     // const item_enum = new Enum(items.map(item => item.Name));
 
     const ai_script = new List({
-      size: data => (data[data.length - 1] || {}).id === 0xFF,
+      size: data => (data[data.length - 1] || {}).name === 'End Script',
       type: new Fork({
         control: new UInt(),
         map: {

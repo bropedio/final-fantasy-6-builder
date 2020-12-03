@@ -89,7 +89,17 @@ class DTEText extends TextScript {
     this.dte_lookup = dte_lookup;
   }
   decode (rom) {
-    return super.decode(rom).flat();
+    const expanded = [];
+
+    super.decode(rom).forEach(item => {
+      if (Array.isArray(item.data)) {
+        expanded.push(...item.data);
+      } else {
+        expanded.push(item);
+      }
+    });
+
+    return expanded;
   }
   encode (list, rom) {
     const condensed = [];
