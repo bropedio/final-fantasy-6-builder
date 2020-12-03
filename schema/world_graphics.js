@@ -3,7 +3,7 @@
 const {
   UInt,
   JSONer,
-  Empty,
+  Placeholder,
   Reader,
   PointerStruct,
   Struct,
@@ -61,10 +61,10 @@ class WorldGraphics extends Closure {
         pointer_size: 'sword',
         fields: [{
           name: 'Empty_1',
-          type: new Empty()
+          type: new Placeholder('Empty 1')
         }, {
           name: 'Empty_2',
-          type: new Empty()
+          type: new Placeholder('Empty 2')
         }, {
           name: 'World Map Clouds Graphics',
           type: new LZSS()
@@ -85,7 +85,7 @@ class WorldGraphics extends Closure {
           type: new LZSS()
         }, {
           name: 'Empty_3',
-          type: new Empty()
+          type: new Placeholder('Empty 3')
         }, {
           name: 'Mine Cart Palettes',
           type: new JSONer({
@@ -98,8 +98,8 @@ class WorldGraphics extends Closure {
           name: 'World of Ruin Graphics', // TODO: Handle swap via USME?
           type: new LZSS()
         }, {
-          name: 'Empty_3',
-          type: new Empty()
+          name: 'Empty_4',
+          type: new Placeholder('Empty 4')
         }, {
           name: 'World of Ruin Map', // TODO: Handle swap via USME?
           type: lzss_grid(256)
