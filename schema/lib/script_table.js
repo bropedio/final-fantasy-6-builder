@@ -13,7 +13,7 @@ module.exports = (function build_table () {
     items.forEach((item, i) => table[start + i] = item);
   }
   
-  add_group(0x00, [
+  add_group(0x02, [
     '{Terra}',
     '{Locke}',
     '{Cyan}',
