@@ -529,7 +529,7 @@ class AIReader extends Closure {
     this.type = new Reader({
       offset: 0xCF8400,
       type: new PointerTable({
-        size: 383,
+        size: 384,
         offset: 0xCF8700,
         warn: 0xCFC050,
         type: new Struct([{

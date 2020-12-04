@@ -30,7 +30,7 @@ class Monsters extends JSONer {
       type: new Reader({
         offset: 0xCFC050,
         type: new List({
-          size: 383,
+          size: 384,
           type: new Text(10, name_table)
         })
       })
@@ -39,7 +39,7 @@ class Monsters extends JSONer {
       type: new Reader({
         offset: 0xCF0000,
         type: new List({
-          size: 383,
+          size: 384,
           type: new Struct([{
             name: 'Speed',
             type: new UInt()
@@ -237,7 +237,7 @@ class Monsters extends JSONer {
       type: new Reader({
         offset: 0xCF37C0,
         type: new List({
-          size: 383,
+          size: 384,
           type: new UInt()
         })
       })
