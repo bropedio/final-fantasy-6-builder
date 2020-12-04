@@ -30,7 +30,9 @@ class DTEs extends JSONer {
   optimize (dtes, fetch) {
     const dialogues = fetch('script');
     const locations = fetch('locations').Name;
-    const chars = dialogues.concat(locations).flat().map(obj => obj.id);
+    const chars = dialogues.concat(locations).flat().map(obj => {
+      return obj.name === 'default' ? obj.data : 0x00;
+    });
     const dte_map = {};
     const bar = new ProgressBar({ length: 32, ticks: 0x80 }); 
 
