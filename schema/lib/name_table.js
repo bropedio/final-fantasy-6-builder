@@ -83,7 +83,7 @@ module.exports = {
   0xCF: '*',
   0xD2: '=',
   0xD3: '"',
-  0xD5: '<close_quote_2>',
+  0xD5: '<music>',
   0xD7: '<x>', // Multiplication sign [?]
   0xF0: '<+->', // PlusMinus sign [?]
   0xF9: '<arrow_left>', // '«' [?]
