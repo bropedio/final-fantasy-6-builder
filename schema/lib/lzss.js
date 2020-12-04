@@ -115,7 +115,11 @@ class LZSS {
       }
     }
 
-    if (bitmask !== 0x01) {
+    if (bitmask === 0x01) {
+      // Empty control, overwrite it
+      rom.offset(control_offset);
+    } else {
+      // Write partial control byte
       write_control();
     }
 
