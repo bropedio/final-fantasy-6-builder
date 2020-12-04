@@ -1,8 +1,9 @@
-"use strict"
+"use strict";
 
 const name_table = require('./name_table');
 const {
   JSONer,
+  Enum,
   Closure,
   Empty,
   UInt,
@@ -23,52 +24,52 @@ module.exports = new TextScript({
       type: new Empty()
     },
     0x02: {
-      name: 'number',
-      type: new UInt(10)
+      name: 'character name',
+      type: new UInt()
     },
     0x03: {
-      name: 'tile',
-      type: new UInt()
-    },
-    0x04: {
-      name: 'tilebank',
-      type: new UInt()
-    },
-    0x05: {
-      name: 'spaces',
-      type: new UInt()
-    },
-    0x06: {
-      name: '0x06',
+      name: '0x03',
       type: new Empty()
     },
-    0x07: {
-      name: 'character1',
+    0x04: {
+      name: 'toggle_something',
+      type: new Empty()
+    },
+    0x05: {
+      name: 'pause',
+      type: new Empty()
+    },
+    0x06: {
+      name: 'frames',
       type: new UInt(10)
+    },
+    0x07: {
+      name: 'press_a',
+      type: new Empty()
     },
     0x08: {
-      name: 'character2',
-      type: new UInt(10)
+      name: '0x08',
+      type: new Empty()
     },
     0x09: {
-      name: 'character3',
-      type: new UInt(10)
+      name: '0x09',
+      type: new Empty()
     },
     0x0A: {
-      name: 'character4',
-      type: new UInt(10)
+      name: '0x0A',
+      type: new Empty()
     },
     0x0B: {
-      name: 'monster_name',
-      type: new UInt(10)
+      name: '0x0B',
+      type: new Empty()
     },
     0x0C: {
-      name: 'skip direction', // ?
+      name: 'command_name',
       type: new UInt()
     },
     0x0D: {
-      name: 'command_name',
-      type: new UInt()
+      name: '0x0D',
+      type: new Empty()
     },
     0x0E: {
       name: 'item_name',
@@ -79,16 +80,40 @@ module.exports = new TextScript({
       type: new UInt()
     },
     0x10: {
-      name: 'status_name',
-      type: new UInt()
+      name: 'variable_info_1',
+      type: new Empty()
     },
     0x11: {
-      name: 'padded_attack_name',
-      type: new UInt()
+      name: 'variable_info_2',
+      type: new Empty()
     },
     0x12: {
-      name: 'item_type_name',
-      type: new UInt()
-    }
+      name: 'draw_name',
+      type: new Enum(['character', 'item', 'attack', 'command'])
+    },
+    0x13: {
+      name: 'variable_info_3',
+      type: new Empty()
+    },
+    0x14: {
+      name: 'variable_info_4',
+      type: new Empty()
+    },
+    0x1C: {
+      name: 'tile_38',
+      type: new Empty()
+    },
+    0x1D: {
+      name: 'tile_3A',
+      type: new Empty()
+    },
+    0x1E: {
+      name: 'tile_3C',
+      type: new Empty()
+    },
+    0x1F: {
+      name: 'tile_3E',
+      type: new Empty()
+    },
   }
 });
