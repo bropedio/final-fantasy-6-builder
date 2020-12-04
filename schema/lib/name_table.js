@@ -80,13 +80,14 @@ module.exports = {
   0xCC: ')',
   0xCD: '%',
   0xCE: '~',
+  0xCF: '*',
   0xD2: '=',
   0xD3: '"',
-  0xD5: '>',
-  0xD7: '*', // Multiplication sign [?]
-  0xF0: '[0xB1]', // PlusMinus sign [?]
-  0xF9: '[0xAB]', // '«' [?]
-  0xFA: '[0xBB]', // '»' [?]
+  0xD5: '<close_quote_2>',
+  0xD7: '<x>', // Multiplication sign [?]
+  0xF0: '<+->', // PlusMinus sign [?]
+  0xF9: '<arrow_left>', // '«' [?]
+  0xFA: '<arrow_right>', // '»' [?]
   0xFE: '_',  // Really a space
   0xFF: ' '   // Really an EOL
 };
