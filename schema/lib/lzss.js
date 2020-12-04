@@ -21,6 +21,7 @@ class LZSS {
       if (!counter) {
         control = rom.read();
         counter = 8;
+        continue;
       }
 
       if (control & 0x01) {
