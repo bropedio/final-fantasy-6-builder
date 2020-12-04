@@ -2,6 +2,7 @@
 
 const {
   Bitmask,
+  Enum,
   Struct
 } = require('rom-builder').types;
 
@@ -71,10 +72,46 @@ const all_statuses = new Struct([{
   type: status_4
 }]);
 
+const status_enum = new Enum([
+  'Dark',
+  'Zombie',
+  'Poison',
+  'Magitek',
+  'Vanish',
+  'Imp',
+  'Petrify',
+  'Death',
+  'Doom',
+  'Near Fatal',
+  'Image',
+  'Mute',
+  'Bserk',
+  'Muddle',
+  'Sap',
+  'Sleep',
+  'Dance',
+  'Regen',
+  'Slow',
+  'Haste',
+  'Stop',
+  'Shell',
+  'Safe',
+  'Reflect',
+  'Rage',
+  'Frozen',
+  'Safety',
+  'Morph',
+  'Chanting',
+  'Hidden',
+  'Dog Block',
+  'Float'
+]);
+
 module.exports = {
   status_1,
   status_2,
   status_3,
   status_4,
-  all_statuses
+  all_statuses,
+  status_enum
 };

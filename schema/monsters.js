@@ -5,6 +5,7 @@ const {
   Bool,
   Bitmask,
   Bits,
+  Custom,
   UInt,
   List,
   Reader,
@@ -156,9 +157,69 @@ class Monsters extends JSONer {
           }, {
             name: 'Special Attack',
             type: new Bits([{
-              name: 'Attack Definition',
+              name: 'Added Effect',
               mask: 0x3F,
-              type: new UInt()
+              type: new Custom({
+                type: new UInt(),
+                formatter: data => {
+
+                /* Potential Migration (needs asm)
+
+                 20 10 08 04 02 01
+                 20: boost/lift/absorb/mp or set status
+
+                 boost dmg *or* lift status *or* absorb hp *or* absorb mp
+                 10 08 04 02 01
+
+                 set status
+                 10 08 04 02 01
+                */
+
+                  const output = {};
+
+                  if (data > 0x31) {
+                    output.type = 'lift_reflect';
+                  }
+                  else if (data === 0x31) {
+                    output.type = 'absorb_mp';
+                  }
+                  else if (data === 0x30) {
+                    output.type = 'absorb_hp';
+                  }
+                  else if (data === 0x20) {
+                    // Null
+                  }
+                  else if (data >= 0x20) {
+                    output.type = 'boost_dmg';
+                    output.data = data - 0x20;
+                  }
+                  else {
+                    output.type = 'set_status';
+                    output.data = statuses.status_enum.format(data);
+                  }
+
+                  return output;
+                },
+                parser: json => {
+                  switch (json.type) {
+                  case 'lift_reflect':
+                    return 0x32;
+                  case 'absorb_mp':
+                    return 0x31;
+                  case 'absorb_hp':
+                    return 0x30;
+                  case null:
+                  case undefined:
+                    return 0x20;
+                  case 'boost_dmg':
+                    return 0x20 | parseInt(json.data);
+                  case 'set_status':
+                    return statuses.status_enum.parse(json.data);
+                  default:
+                    throw new Error('Invalid special attack type');
+                  }
+                }
+              })
             }, { 
               name: 'No Damage',
               mask: 0x40,
@@ -169,6 +230,15 @@ class Monsters extends JSONer {
               type: new Bool()
             }])
           }])
+        })
+      })
+    }, {
+      name: 'Special Attack Graphic',
+      type: new Reader({
+        offset: 0xCF37C0,
+        type: new List({
+          size: 383,
+          type: new UInt()
         })
       })
     }, {
