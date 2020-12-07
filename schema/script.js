@@ -21,7 +21,7 @@ class Script extends Closure {
     this.type = new Reader({
       offset: 0xCCE600,
       type: new PointerTable({
-        size: 3085,
+        size: 3084,
         offset: 0xCD0000,
         wrap: 0xCE0000,
         warn: 0xCEF100,
