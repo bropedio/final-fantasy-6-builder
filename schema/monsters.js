@@ -242,6 +242,15 @@ class Monsters extends JSONer {
         })
       })
     }, {
+      name: 'Special Attack Name',
+      type: new Reader({
+        offset: 0xCFD0D0,
+        type: new List({
+          size: 384,
+          type: new Text(10, name_table)
+        })
+      })
+    }, {
       name: 'AI Script',
       type: new AIReader(fetch)
     }]);
