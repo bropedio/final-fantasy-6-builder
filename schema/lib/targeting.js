@@ -19,6 +19,7 @@ module.exports = new Bits([{
     0x41: 'Hurt One',
     0x43: 'One Foe',
     0x04: 'Everyone',
+    0x69: '0x69',
     0x6A: 'Foe Group',
     0x6E: 'All Foes',
     0x03: 'One Ally',
@@ -28,6 +29,6 @@ module.exports = new Bits([{
     0x21: 'Spread Help',
     0x23: 'TODO-Targeting',
     0x02: 'Self',
-    0x6B: 'Unknown...',
+    0x6B: '0x6B',
   })
 }]);
