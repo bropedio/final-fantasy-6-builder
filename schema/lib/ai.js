@@ -37,14 +37,18 @@ const target_enum = new Enum(
     0x0C: 'Gogo',
     0x0D: 'Umaro',
     0x0E: 'Banon',
-    0x0F: 'Leo'
+    0x0F: 'Leo',
+    0x11: 'Character 0x11',
+    0x29: 'Kefka-1',
+    0x2B: 'Kefka-3'
   }, {
-    0x2B: '[Unknown]',
     0x36: 'Self',
     0x37: 'All enemies but self',
     0x38: 'All enemies',
     0x39: 'Random enemies but self',
+    0x3D: 'All dead monsters',
     0x3A: 'Random enemies',
+    0x41: 'Enemies w/ Reflect',
     0x43: 'All characters',
     0x44: 'Random character',
     0x45: 'Last char/enemy to act',
@@ -54,7 +58,8 @@ const target_enum = new Enum(
     0x49: 'Character #2',
     0x4A: 'Character #3',
     0x4B: 'Character #4',
-    0x4C: 'All or one random target'
+    0x4C: 'All or one random target',
+    0x4D: 'Special target'
   }
 );
 
