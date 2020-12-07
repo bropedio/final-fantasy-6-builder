@@ -52,8 +52,11 @@ class Spells extends JSONer {
             0x01: 'Help One',
             0x2E: 'All Allies',
             0x21: 'Spread Help',
+            0x29: '0x29',
             0x02: 'Self',
-            0x6B: 'Unknown...',
+            0x69: '0x69',
+            0x6B: '0x6B',
+            0xC0: '0xC0'
           })
         }])
       }, {
