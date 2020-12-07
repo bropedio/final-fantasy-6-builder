@@ -112,7 +112,8 @@ const command_enum = new Enum({
   0x19: 'Summon',
   0x1A: 'Health',
   0x1B: 'Shock',
-  0x1D: 'Magitek'
+  0x1D: 'Magitek',
+  0xFE: 'DoNothing'
 });
 
 const enemy_bitmask = new Bitmask({
