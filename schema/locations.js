@@ -24,7 +24,7 @@ class Locations extends JSONer {
         type: new PointerTable({
           size: 73,
           offset: 0xCEF100,
-          warn: 0xCEF390, // Note: lots of empty space after here...
+          warn: 0xCEF470, // Note: lots of empty space after here...
           type: new DTEText({
             dtes: fetch('dtes'),
             table: script_table
