@@ -26,7 +26,7 @@ class Locations extends JSONer {
           offset: 0xCEF100,
           warn: 0xCEF470, // Note: lots of empty space after here...
           type: new DTEText({
-            dtes: fetch('dtes'),
+            dtes: fetch('dtes').data,
             table: script_table
           })
         })

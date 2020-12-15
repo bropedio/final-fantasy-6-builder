@@ -26,7 +26,7 @@ class Script extends Closure {
         wrap: 0xCE0000,
         warn: 0xCEF100,
         type: new DTEText({
-          dtes: fetch('dtes'),
+          dtes: fetch('dtes').data,
           table: script_table
         })
       })

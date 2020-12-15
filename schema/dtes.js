@@ -28,8 +28,8 @@ class DTEs extends JSONer {
   }
 
   optimize (dtes, fetch) {
-    const dialogues = fetch('script');
-    const locations = fetch('locations').Name;
+    const dialogues = fetch('script').data;
+    const locations = fetch('locations').data.Name;
     const chars = dialogues.concat(locations).flat().map(obj => {
       return obj.name === 'default' ? obj.data : 0x00;
     });
