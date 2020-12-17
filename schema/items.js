@@ -175,7 +175,7 @@ class Items extends JSONer {
             0x04: 'SOS Reflect',
             0x08: 'Exp x2',
             0x10: 'Gold x2',
-            0x20: 'UNKNOWN 0x20',
+            0x20: 'UNKNOWN 0x20', // BNW Moogle Charm (Dance/Fall)
             0x40: 'UNKNOWN 0x40',
             0x80: 'Undead'
           }
@@ -185,7 +185,7 @@ class Items extends JSONer {
         type: targeting
       }, {
         name: template({
-          Item: 'Element (Unused)',
+          Item: 'Element (Unused)', // Not True -- this is used
           Armor: 'Resist Element',
           Weapon: 'Element Attack'
         }),
@@ -267,7 +267,7 @@ class Items extends JSONer {
               0x10: 'Affects MP',
               0x20: 'Lifts Status',
               0x40: 'UNKNOWN-0x40',
-              0x80: 'Max Out'
+              0x80: 'Max Out' // "Fractional based on Power"
             }
           }),
           Armor: new UInt()
