@@ -38,7 +38,7 @@ const tile_properties_struct = new Bits([{
 }, {
   name: 'UNKNOWN-0x0080',
   mask: 0x0080,
-  type: new Fixed(0x00)
+  type: new UInt(0x00)
 }, {
   name: 'Battle Background',
   mask: 0x0700,
@@ -46,7 +46,7 @@ const tile_properties_struct = new Bits([{
 }, {
   name: 'UNKNOWN-0xF800',
   mask: 0xF800,
-  type: new Fixed(0x00)
+  type: new UInt(0x00)
 }]);
 
 class WorldTileProperties extends JSONer {

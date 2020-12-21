@@ -16,7 +16,8 @@ const {
   ParallelList,
   Looker,
   PointerTable,
-  JSONer
+  JSONer,
+  Custom
 } = require('rom-builder').types;
 
 const elements = require('./lib/elements');
@@ -185,7 +186,7 @@ class Items extends JSONer {
         type: targeting
       }, {
         name: template({
-          Item: 'Element (Unused)', // Not True -- this is used
+          Item: 'Element Attack',
           Armor: 'Resist Element',
           Weapon: 'Element Attack'
         }),
@@ -267,7 +268,7 @@ class Items extends JSONer {
               0x10: 'Affects MP',
               0x20: 'Lifts Status',
               0x40: 'UNKNOWN-0x40',
-              0x80: 'Max Out' // "Fractional based on Power"
+              0x80: 'Fractional'
             }
           }),
           Armor: new UInt()
@@ -345,10 +346,57 @@ class Items extends JSONer {
           name: 'Magic Evade',
           type: new UInt()
         }])
-      }, {
-        name: 'Special Effect',
-        type: new UInt()
-      }, {
+      }, template({
+        Item: {
+          name: 'Special Effect',
+          type: new UInt()
+        },
+        Weapon: {
+          name: 'Special and Evade',
+          type: new Custom({
+            formatter: function (data) {
+              const formatted = this.type.format(data);
+              if (!formatted['Evade Type'].length) {
+                delete formatted['Evade Animation'];
+              }
+              return formatted;
+            },
+            parser: function (json) {
+              if (!json['Evade Animation']) {
+                json['Evade Animation'] = 'Knife';
+              }
+              return this.type.parse(json);
+            },
+            type: new Bits([{
+              mask: 0xF0,
+              name: 'Special Effect',
+              type: new UInt()
+            }, {
+              mask: 0x0C,
+              name: 'Evade Type',
+              type: new Bitmask({
+                flags: {
+                  0x01: 'Physical',
+                  0x02: 'Magical'
+                }
+              })
+            }, {
+              mask: 0x03,
+              name: 'Evade Animation',
+              type: new Enum({
+                0x00: 'Knife',
+                0x01: 'Sword',
+                0x02: 'Shield',
+                0x03: 'Cape'
+              })
+            }])
+          })
+        },
+        Armor: {
+          name: 'Special Effect (unused?)',
+          type: new UInt()
+        }
+      }), {
         name: 'Price',
         type: new UInt('word')
       }]);
