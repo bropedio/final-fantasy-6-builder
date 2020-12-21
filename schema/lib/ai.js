@@ -142,13 +142,13 @@ class AIReader extends Closure {
     super();
 
     // TODO for spell list: 0xFE means "do nothing" for this op code
-    // const spell_scheme = ff6.get('spells');
-    // const spells = spell_scheme.type.format(ff6.data.spells);
-    // const spell_enum = new Enum(spells.map(spell => spell.Name));
+    const spell_data = fetch('spells');
+    const spells = spell_data.scheme.type.format(spell_data.data);
+    const spell_enum = new Enum(spells.map(spell => spell.Name));
 
-    // const item_scheme = ff6.get('items');
-    // const items = item_scheme.type.format(ff6.data.items);
-    // const item_enum = new Enum(items.map(item => item.Name));
+    const item_data = fetch('items');
+    const items = item_data.scheme.type.format(item_data.data);
+    const item_enum = new Enum(items.map(item => item.Name));
 
     const ai_script = new List({
       size: data => (data[data.length - 1] || {}).name === 'End Script',
@@ -158,11 +158,11 @@ class AIReader extends Closure {
           default: {
             name: 'Use Spell',
             use_control: true,
-            type: new UInt() /*spell_enum*/
+            type: spell_enum
           },
           0xF0: {
             name: 'Use Random Spell',
-            type: new List({ size: 3, type: new UInt() /*spell_enum*/ })
+            type: new List({ size: 3, type: spell_enum })
           },
           0xF1: {
             name: 'Target',
@@ -204,8 +204,8 @@ class AIReader extends Closure {
             name: 'Throw/Use Item',
             type: new Struct([
               { name: 'Mode', type: new Enum(['Use', 'Throw']) },
-              { name: 'Common (2/3)', type: new UInt() /*item_enum*/ },
-              { name: 'Rare (1/3)', type: new UInt() /*item_enum*/ }
+              { name: 'Common (2/3)', type: item_enum },
+              { name: 'Rare (1/3)', type: item_enum }
             ])
           },
           0xF7: {
@@ -344,11 +344,11 @@ class AIReader extends Closure {
                 },
                 0x02: {
                   name: 'Hit by spell',
-                  type: new List({ size: 2, type: new UInt() /*spell_enum*/ }) 
+                  type: new List({ size: 2, type: spell_enum }) 
                 },
                 0x03: {
                   name: 'Hit by item',
-                  type: new List({ size: 2, type: new UInt() /*item_enum*/ })
+                  type: new List({ size: 2, type: item_enum })
                 },
                 0x04: {
                   name: 'Hit by element',
