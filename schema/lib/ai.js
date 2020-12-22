@@ -144,11 +144,27 @@ class AIReader extends Closure {
     // TODO for spell list: 0xFE means "do nothing" for this op code
     const spell_data = fetch('spells');
     const spells = spell_data.scheme.type.format(spell_data.data);
-    const spell_enum = new Enum(spells.map(spell => spell.Name));
+    const seen_spell = {};
+    const spell_enum = new Enum(spells.map((spell, i) => {
+      if (seen_spell[spell.Name.trim()]) {
+        return `${i}:${spell.Name}`.trim();
+      } else {
+        seen_spell[spell.Name.trim()] = true;
+        return spell.Name.trim();
+      }
+    }));
 
     const item_data = fetch('items');
     const items = item_data.scheme.type.format(item_data.data);
-    const item_enum = new Enum(items.map(item => item.Name));
+    const seen_item = {};
+    const item_enum = new Enum(items.map((item, i) => {
+      if (seen_item[item.Name.trim()]) {
+        return `${i}:${item.Name}`.trim();
+      } else {
+        seen_item[item.Name.trim()] = true;
+        return item.Name.trim();
+      }
+    }));
 
     const ai_script = new List({
       size: data => (data[data.length - 1] || {}).name === 'End Script',

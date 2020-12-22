@@ -17,7 +17,15 @@ class SpellRates extends JSONer {
 
     const { data, scheme } = fetch('spells');
     const spells = scheme.type.format(data);
-    const spell_names = spells.map(spell => spell.Name);
+    const seen_spells = {};
+    const spell_names = spells.map((spell, i) => {
+      if (seen_spells[spell.Name.trim()]) {
+        return `${i}:${spell.Name}`.trim();
+      } else {
+        seen_spells[spell.Name.trim()] = true;
+        return spell.Name.trim();
+      }
+    });
     const spell_enum = new Enum({ 0xFF: 'empty' }, spell_names);
     const esper_names = spell_names.slice(54, 81);
 
