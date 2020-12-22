@@ -15,6 +15,8 @@ const {
   Closure
 } = require('rom-builder').types;
 
+const { get_values } = require('rom-builder');
+
 /* Extra Type Definitions */
 
 const element_enum = require('./elements');
@@ -142,29 +144,10 @@ class AIReader extends Closure {
     super();
 
     // TODO for spell list: 0xFE means "do nothing" for this op code
-    const spell_data = fetch('spells');
-    const spells = spell_data.scheme.type.format(spell_data.data);
-    const seen_spell = {};
-    const spell_enum = new Enum(spells.map((spell, i) => {
-      if (seen_spell[spell.Name.trim()]) {
-        return `${i}:${spell.Name}`.trim();
-      } else {
-        seen_spell[spell.Name.trim()] = true;
-        return spell.Name.trim();
-      }
-    }));
-
-    const item_data = fetch('items');
-    const items = item_data.scheme.type.format(item_data.data);
-    const seen_item = {};
-    const item_enum = new Enum(items.map((item, i) => {
-      if (seen_item[item.Name.trim()]) {
-        return `${i}:${item.Name}`.trim();
-      } else {
-        seen_item[item.Name.trim()] = true;
-        return item.Name.trim();
-      }
-    }));
+    const spell_names = get_values(fetch('spells'));
+    const spell_enum = new Enum(spell_names);
+    const item_names = get_values(fetch('items'));
+    const item_enum = new Enum(item_names);
 
     const ai_script = new List({
       size: data => (data[data.length - 1] || {}).name === 'End Script',
