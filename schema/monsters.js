@@ -2,6 +2,7 @@
 
 const {
   Text,
+  Enum,
   Bool,
   Bitmask,
   Bits,
@@ -14,6 +15,7 @@ const {
   JSONer
 } = require('rom-builder').types;
 
+const { get_values } = require('rom-builder');
 const AIReader = require('./lib/ai');
 const name_table = require('./lib/name_table');
 const statuses = require('./lib/statuses');
@@ -24,6 +26,9 @@ const elements = require('./lib/elements');
 class Monsters extends JSONer {
   constructor (fetch) {
     super();
+
+    const spell_names = get_values(fetch('spells'));
+    const spell_enum = new Enum({ 0xFF: '-' }, spell_names);
 
     this.type = new ParallelList([{
       name: 'Name',
@@ -248,6 +253,30 @@ class Monsters extends JSONer {
         type: new List({
           size: 384,
           type: new Text(10, name_table)
+        })
+      })
+    }, {
+      name: 'Rage',
+      type: new Reader({
+        offset: 0xCF4600,
+        type: new List({
+          size: 255,
+          type: new List({
+            size: 2,
+            type: spell_enum
+          })
+        })
+      })
+    }, {
+      name: 'Sketch',
+      type: new Reader({
+        offset: 0xCF4300,
+        type: new List({
+          size: 384,
+          type: new List({
+            size: 2,
+            type: spell_enum
+          })
         })
       })
     }, {
