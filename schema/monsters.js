@@ -49,7 +49,7 @@ class Monsters extends JSONer {
             name: 'Speed',
             type: new UInt()
           }, {
-            name: 'Vigor',
+            name: 'Attack',
             type: new UInt()
           }, {
             name: 'Hit Rate',
