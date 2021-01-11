@@ -99,7 +99,7 @@ class Spells extends JSONer {
             0x04: 'Lifts Status',
             0x08: 'Toggles Status',
             0x10: 'Stamina Evasion',
-            0x20: 'Cannot Dodge',
+            0x20: 'Cannot Miss',
             0x40: 'Abort on Enemies',
             0x80: 'Fractional Dmg'
           }

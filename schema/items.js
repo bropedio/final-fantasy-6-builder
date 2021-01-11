@@ -36,6 +36,10 @@ class Items extends JSONer {
     // const spells = spell_scheme.format(ff6.data.spells);
     // const spell_enum = new Enum(spells.map(spell => spell.Name));
 
+    const evade_enum = new Enum([
+      '0','+10','+20','+30','+40','+50','-10','-20','-30','-40','-50'
+    ]);
+
     function get_item_data (type_name) {
       function template (options) {
         return options[type_name]
@@ -340,11 +344,11 @@ class Items extends JSONer {
         type: new Bits([{
           mask: 0x0F,
           name: 'Physical Evade',
-          type: new UInt()
+          type: evade_enum
         }, {
           mask: 0xF0,
           name: 'Magic Evade',
-          type: new UInt()
+          type: evade_enum
         }])
       }, template({
         Item: {
