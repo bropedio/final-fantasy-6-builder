@@ -1,5 +1,7 @@
 "use strict";
 
+const {HiRom} = require('rom-builder');
+
 class LZSS {
   constructor (input) {
     this.type = input && input.type;
@@ -41,9 +43,12 @@ class LZSS {
       counter--;
     }
 
-    return data;
+    return this.type ? this.type.decode(new HiRom(data)) : data;
   }
-  encode (source_data, rom) {
+  encode (data, rom) {
+    const source_data = this.type ? new HiRom([]) : data;
+    if (this.type) this.type.encode(data, source_data);
+
     const length_offset = rom.offset();
     rom.offset(length_offset + 2);
 
