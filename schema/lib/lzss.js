@@ -45,9 +45,12 @@ class LZSS {
 
     return this.type ? this.type.decode(new HiRom(data)) : data;
   }
-  encode (data, rom) {
-    const source_data = this.type ? new HiRom([]) : data;
-    if (this.type) this.type.encode(data, source_data);
+  encode (source_data, rom) {
+    if (this.type) {
+      const proxy_rom = new HiRom([]);
+      this.type.encode(source_data, proxy_rom);
+      source_data = proxy_rom.buffer;
+    }
 
     const length_offset = rom.offset();
     rom.offset(length_offset + 2);
