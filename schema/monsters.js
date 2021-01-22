@@ -30,6 +30,9 @@ class Monsters extends JSONer {
     const spell_names = get_values(fetch('spells'));
     const spell_enum = new Enum({ 0xFF: '-' }, spell_names);
 
+    const item_names = get_values(fetch('items'));
+    const item_enum = new Enum({ 0xFF: '[n/a]' }, item_names);
+
     this.type = new ParallelList([{
       name: 'Name',
       type: new Reader({
@@ -277,6 +280,27 @@ class Monsters extends JSONer {
             size: 2,
             type: spell_enum
           })
+        })
+      })
+    }, {
+      name: 'Items',
+      type: new Reader({
+        offset: 0xCF3000,
+        type: new List({
+          size: 384,
+          type: new Struct([{
+            name: 'Rare Steal',
+            type: item_enum
+          }, {
+            name: 'Common Steal',
+            type: item_enum
+          }, {
+            name: 'Rare Drop',
+            type: item_enum
+          }, {
+            name: 'Common Drop',
+            type: item_enum
+          }])
         })
       })
     }, {
