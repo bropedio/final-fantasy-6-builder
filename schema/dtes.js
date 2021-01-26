@@ -8,6 +8,7 @@ const {
 } = require('rom-builder').types;
 
 const script_table = require('./lib/script_table');
+const { get_values } = require('rom-builder');
 
 /* DTE Table */
 
@@ -29,7 +30,7 @@ class DTEs extends JSONer {
 
   optimize (dtes, fetch) {
     const dialogues = fetch('script').data;
-    const locations = fetch('locations').data.Name;
+    const locations = get_values(fetch('locations'));
     const chars = dialogues.concat(locations).flat().map(obj => {
       return obj.name === 'default' ? obj.data : 0x00;
     });
