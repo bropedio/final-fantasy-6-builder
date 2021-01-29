@@ -303,15 +303,15 @@ class AIReader extends Closure {
                   type: target_enum
                 },
                 0x08: {
-                  name: 'Unknown',
+                  name: 'Unknown-0x08',
                   type: new UInt()
                 },
                 0x09: {
-                  name: 'Unknown',
+                  name: 'End Battle with Gau Returning',
                   type: new UInt()
                 },
                 0x0A: {
-                  name: 'Unknown',
+                  name: 'Unknown-0x0A',
                   type: new UInt()
                 },
                 0x0B: {
