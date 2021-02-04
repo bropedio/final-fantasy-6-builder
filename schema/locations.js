@@ -27,15 +27,13 @@ class Locations extends JSONer {
         type: new Struct([{
           name: 'Name',
           type: new IndexTable({
-            offset: 0xE68400, 
-            type: new PointerTable({
-              size: 73,
-              offset: 0xCEF100,
-              warn: 0xCEF470, // Note: lots of empty space after here...
-              type: new DTEText({
-                dtes: fetch('dtes').data,
-                table: script_table
-              })
+            table_offset: 0xE68400, 
+            table_warn: null,
+            data_offset: 0xCEF100,
+            data_warn: 0xCEF470, // Note: lots of empty space after here...
+            type: new DTEText({
+              dtes: fetch('dtes').data,
+              table: script_table
             })
           })
         }, {
