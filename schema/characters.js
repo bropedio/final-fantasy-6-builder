@@ -15,6 +15,7 @@ const {
 
 const { get_values } = require('rom-builder');
 const table = require('./lib/name_table');
+const { command_enum } = require('./lib/commands');
 
 /* Characters */
 
@@ -50,7 +51,7 @@ class Characters extends JSONer {
             name: 'Commands',
             type: new List({
               size: 4,
-              type: new UInt() // use command_enum?
+              type: command_enum
             })
           }, {
             name: 'Vigor',
