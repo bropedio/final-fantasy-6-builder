@@ -4,6 +4,7 @@
   "description": "\"Tool for inspecting and modifying various data in FF6\"",
   "main": "app.js",
   "scripts": {
+    "postinstall": "npm link rom-builder",
     "test": "test"
   },
   "author": "Bropedio",
