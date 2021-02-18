@@ -523,6 +523,10 @@ class AIReader extends Closure {
                   name: 'Battle formation = {X}',
                   type: new UInt('word')
                 },
+                0x1C: {
+                  name: 'Ignore limited',
+                  type: new List({ size: 2, type: new Fixed(0x00) })
+                },
                 0xB5: {
                   name: 'Unknown 0xB5',
                   type: new UInt('word')
