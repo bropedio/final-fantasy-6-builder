@@ -79,23 +79,24 @@ class Items extends JSONer {
       }, {
         name: 'Equippable',
         type: new Bitmask({
-          flags: {
-            0x0001: 'Terra',
-            0x0002: 'Locke',
-            0x0004: 'Cyan',
-            0x0008: 'Shadow',
-            0x0010: 'Edgar',
-            0x0020: 'Sabin',
-            0x0040: 'Celes',
-            0x0080: 'Strago',
-            0x0100: 'Relm',
-            0x0200: 'Setzer',
-            0x0400: 'Mog',
-            0x0800: 'Gau',
-            0x1000: 'Gogo',
-            0x2000: 'Umaro',
-            0xC000: 'UNUSED'
-          }
+          flags: [
+            'Terra',
+            'Locke',
+            'Cyan',
+            'Shadow',
+            'Edgar',
+            'Sabin',
+            'Celes',
+            'Strago',
+            'Relm',
+            'Setzer',
+            'Mog',
+            'Gau',
+            'Gogo',
+            'Umaro',
+            'Banon',
+            'Leo'
+          ]
         })
       }, {
         name: 'Spell Learnrate',
@@ -118,72 +119,72 @@ class Items extends JSONer {
       }, {
         name: 'Effects-1',
         type: new Bitmask({
-          flags: {
-            0x01: 'Physical +25%',
-            0x02: 'Magical +25%',
-            0x04: 'HP +25%',
-            0x08: 'HP +50%',
-            0x10: 'HP +12.5%',
-            0x20: 'MP +25%',
-            0x40: 'MP +50%',
-            0x80: 'MP +12.5%'
-          }
+          flags: [
+            'Physical +25%',
+            'Magical +25%',
+            'HP +25%',
+            'HP +50%',
+            'HP +12.5%',
+            'MP +25%',
+            'MP +50%',
+            'MP +12.5%'
+          ]
         })
       }, {
         name: 'Effects-2',
         type: new Bitmask({
-          flags: {
-            0x01: 'Preemptive Up',
-            0x02: 'No Back/Pincer',
-            0x04: 'Fight -> Jump',
-            0x08: 'Magic -> X-Magic',
-            0x10: 'Runic -> Shock',
-            0x20: 'Slot -> GP Rain',
-            0x40: 'Steal -> Mug',
-            0x80: 'Jump More'
-          }
+          flags: [
+            'Preemptive Up',
+            'No Back/Pincer',
+            'Fight -> Jump',
+            'Magic -> X-Magic',
+            'Runic -> Shock',
+            'Slot -> GP Rain',
+            'Steal -> Mug',
+            'Jump More'
+          ]
         })
       }, {
         name: 'Effects-3',
         type: new Bitmask({
-          flags: {
-            0x01: 'Steal Better',
-            0x02: 'UNKNOWN',
-            0x04: 'Sketch Better',
-            0x08: 'Control Better',
-            0x10: 'Always Hits',
-            0x20: 'Halve MP Consumption',
-            0x40: 'Set MP Consumption to 1',
-            0x80: 'Raise Vigor' // ???
-          }
+          flags: [
+            'Steal Better',
+            'UNKNOWN',
+            'Sketch Better',
+            'Control Better',
+            'Always Hits',
+            'Halve MP Consumption',
+            'Set MP Consumption to 1',
+            'Raise Vigor' // ???
+          ]
         })
       }, {
         name: 'Effects-4',
         type: new Bitmask({
-          flags: {
-            0x01: 'Fight -> X-Fight',
-            0x02: 'Counterattack',
-            0x04: 'Randomly Evades', // ???
-            0x08: 'Two-handed',
-            0x10: 'Dual Wield',
-            0x20: 'Equip anything',
-            0x40: 'True Knight',
-            0x80: 'Spellcast 50%'
-          }
+          flags: [
+            'Fight -> X-Fight',
+            'Counterattack',
+            'Randomly Evades', // ???
+            'Two-handed',
+            'Dual Wield',
+            'Equip anything',
+            'True Knight',
+            'Spellcast 50%'
+          ]
         })
       }, {
         name: 'Effects-5',
         type: new Bitmask({
-          flags: {
-            0x01: 'SOS Shell',
-            0x02: 'SOS Safe',
-            0x04: 'SOS Reflect',
-            0x08: 'Exp x2',
-            0x10: 'Gold x2',
-            0x20: 'UNKNOWN 0x20', // BNW Moogle Charm (Dance/Fall)
-            0x40: 'UNKNOWN 0x40',
-            0x80: 'Undead'
-          }
+          flags: [
+            'SOS Shell',
+            'SOS Safe',
+            'SOS Reflect',
+            'Exp x2',
+            'Gold x2',
+            'UNKNOWN 0x20', // BNW Moogle Charm (Dance/Fall)
+            'UNKNOWN 0x40',
+            'Undead'
+          ]
         })
       }, {
         name: 'Targeting',
@@ -252,28 +253,28 @@ class Items extends JSONer {
         name: 'Misc Flags',
         type: template({
           Weapon: new Bitmask({
-            flags: {
-              0x01: 'UNKNOWN-0x01',
-              0x02: 'Allow Bushido',
-              0x04: 'UNKNOWN-0x04',
-              0x08: 'UNKNOWN-0x08',
-              0x10: 'UNKNOWN-0x10',
-              0x20: 'Ignores Row',
-              0x40: 'Allow Two Handed',
-              0x80: 'Allow Runic'
-            }
+            flags: [
+              'UNKNOWN-0x01',
+              'Allow Bushido',
+              'UNKNOWN-0x04',
+              'UNKNOWN-0x08',
+              'UNKNOWN-0x10',
+              'Ignores Row',
+              'Allow Two Handed',
+              'Allow Runic'
+            ]
           }),
           Item: new Bitmask({
-            flags: {
-              0x01: 'UNKNOWN-0x01',
-              0x02: 'Dmg Undead',
-              0x04: 'UNKNOWN-0x04',
-              0x08: 'Affects HP',
-              0x10: 'Affects MP',
-              0x20: 'Lifts Status',
-              0x40: 'UNKNOWN-0x40',
-              0x80: 'Fractional'
-            }
+            flags: [
+              'UNKNOWN-0x01',
+              'Dmg Undead',
+              'UNKNOWN-0x04',
+              'Affects HP',
+              'Affects MP',
+              'Lifts Status',
+              'UNKNOWN-0x40',
+              'Fractional'
+            ]
           }),
           Armor: new UInt()
         })
@@ -379,10 +380,10 @@ class Items extends JSONer {
               mask: 0x0C,
               name: 'Evade Type',
               type: new Bitmask({
-                flags: {
-                  0x01: 'Physical',
-                  0x02: 'Magical'
-                }
+                flags: [
+                  'Physical',
+                  'Magical'
+                ]
               })
             }, {
               mask: 0x03,

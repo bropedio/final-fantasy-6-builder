@@ -125,16 +125,16 @@ const command_enum = new Enum({
 
 const enemy_bitmask = new Bitmask({
   off_state: 'Self',
-  flags: {
-    0x01: 'Enemy 0',
-    0x02: 'Enemy 1',
-    0x04: 'Enemy 2',
-    0x08: 'Enemy 3',
-    0x10: 'Enemy 4',
-    0x20: 'Enemy 5',
-    0x40: 'Enemy 6 (n/a)',
-    0x80: 'Enemy 7 (n/a)'
-  }
+  flags: [
+    'Enemy 0',
+    'Enemy 1',
+    'Enemy 2',
+    'Enemy 3',
+    'Enemy 4',
+    'Enemy 5',
+    'Enemy 6 (n/a)',
+    'Enemy 7 (n/a)'
+  ]
 });
 
 /* AI */

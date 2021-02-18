@@ -65,44 +65,44 @@ class Spells extends JSONer {
       }, {
         name: 'Flags-1',
         type: new Bitmask({
-          flags: {
-            0x01: 'Physical',
-            0x02: 'Instant Death',
-            0x04: 'Target Dead Only',
-            0x08: 'Reverse on Undead',
-            0x10: 'Randomize Target', 
-            0x20: 'Ignore Defense',
-            0x40: 'No Split Damage',
-            0x80: 'Abort on Allies'
-          }
+          flags: [
+            'Physical',
+            'Instant Death',
+            'Target Dead Only',
+            'Reverse on Undead',
+            'Randomize Target', 
+            'Ignore Defense',
+            'No Split Damage',
+            'Abort on Allies'
+          ]
         })
       }, {
         name: 'Flags-2',
         type: new Bitmask({
-          flags: {
-            0x01: 'Usable on Field',
-            0x02: 'Unreflectable',
-            0x04: 'Learnable Lore',
-            0x08: 'Runicable',
-            0x10: 'Warps',
-            0x20: 'Retarget if Invalid',
-            0x40: 'Suicidal',
-            0x80: 'MP Damage'
-          }
+          flags: [
+            'Usable on Field',
+            'Unreflectable',
+            'Learnable Lore',
+            'Runicable',
+            'Warps',
+            'Retarget if Invalid',
+            'Suicidal',
+            'MP Damage'
+          ]
         })
       }, {
         name: 'Flags-3',
         type: new Bitmask({
-          flags: {
-            0x01: 'Heals',
-            0x02: 'Drains',
-            0x04: 'Lifts Status',
-            0x08: 'Toggles Status',
-            0x10: 'Stamina Evasion',
-            0x20: 'Cannot Miss',
-            0x40: 'Abort on Enemies',
-            0x80: 'Fractional Dmg'
-          }
+          flags: [
+            'Heals',
+            'Drains',
+            'Lifts Status',
+            'Toggles Status',
+            'Stamina Evasion',
+            'Cannot Miss',
+            'Abort on Enemies',
+            'Fractional Dmg'
+          ]
         })
       }, {
         name: 'MP Cost',
@@ -113,14 +113,16 @@ class Spells extends JSONer {
       }, {
         name: 'Flags-4',
         type: new Bitmask({
-          flags: {
-            0x01: 'Miss if Status Unchanged',
-            0x02: 'Show Msg',
-            0x04: 'Stamina Damage', // BNW
-            0x08: 'Respect Gauntlet/Genji', // BNW
-            0x10: 'Respect Row', // BNW
-            0x20: 'No Critical Dmg' // BNW
-          }
+          flags: [
+            'Miss if Status Unchanged',
+            'Show Msg',
+            'Stamina Damage', // BNW
+            'Respect Gauntlet/Genji', // BNW
+            'Respect Row', // BNW
+            'No Critical Dmg', // BNW
+            'Unused-0x40',
+            'Unused-0x80'
+          ]
         })
       }, {
         name: 'Hitrate',

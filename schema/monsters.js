@@ -93,30 +93,30 @@ class Monsters extends JSONer {
           }, {
             name: 'Flags-1',
             type: new Bitmask({
-              flags: {
-                0x01: 'Dies at 0 MP',
-                0x02: 'UNKNOWN 0x02',
-                0x04: 'No Name',
-                0x08: 'UNKNOWN 0x08',
-                0x10: 'Humanoid',
-                0x20: 'UNKNOWN 0x20',
-                0x40: 'Boss',
-                0x80: 'Undead'
-              }
+              flags: [
+                'Dies at 0 MP',
+                'UNKNOWN 0x02',
+                'No Name',
+                'UNKNOWN 0x08',
+                'Humanoid',
+                'UNKNOWN 0x20',
+                'Boss',
+                'Undead'
+              ]
             })
           }, {
             name: 'Flags-2',
             type: new Bitmask({
-              flags: {
-                0x01: 'Hard to Run',
-                0x02: 'Attack First',
-                0x04: 'Fractional Immune', // BNW (Suplex Immunity)
-                0x08: 'Cannot Run',
-                0x10: 'Cannot Scan',
-                0x20: 'Cannot Sketch',
-                0x40: 'Special Event',
-                0x80: 'Cannot Control'
-              }
+              flags: [
+                'Hard to Run',
+                'Attack First',
+                'Fractional Immune', // BNW (Suplex Immunity)
+                'Cannot Run',
+                'Cannot Scan',
+                'Cannot Sketch',
+                'Special Event',
+                'Cannot Control'
+              ]
             })
           }, {
             name: 'Blocked Status-1',
@@ -151,16 +151,16 @@ class Monsters extends JSONer {
           }, {
             name: 'Flags-3',
             type: new Bitmask({
-              flags: {
-                0x01: 'True Knight',
-                0x02: 'Runic',
-                0x04: 'Rerise',
-                0x08: 'UNKNOWN 0x08',
-                0x10: 'UNKNOWN 0x10',
-                0x20: 'UNKNOWN 0x20',
-                0x40: 'UNKNOWN 0x40',
-                0x80: 'Removeable Float'
-              }
+              flags: [
+                'True Knight',
+                'Runic',
+                'Rerise',
+                'UNKNOWN 0x08',
+                'UNKNOWN 0x10',
+                'UNKNOWN 0x20',
+                'UNKNOWN 0x40',
+                'Removeable Float'
+              ]
             })
           }, {
             name: 'Special Attack',
