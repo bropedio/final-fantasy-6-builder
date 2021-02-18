@@ -183,7 +183,26 @@ class AIReader extends Closure {
             name: 'Add/Remove',
             type: new Struct([{
               name: 'AnimationID',
-              type: new UInt()
+              type: new Enum([
+                'Hide',
+                'Smoke',
+                'Up',
+                'Left',
+                'Little Splash',
+                'Up [dup]',
+                'Big Splash',
+                'Left [dup]',
+                'Disintegrate Down',
+                'Disintegrate Up',
+                'Melt',
+                'Disintegrate Left',
+                'Boss',
+                'Flutter',
+                'Chadarnook',
+                'Hide [dup-1]',
+                'Hide [dup-2]',
+                'Kefka'
+              ])
             }, {
               name: 'Mode',
               type: new Enum([
