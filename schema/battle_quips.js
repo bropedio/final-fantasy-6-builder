@@ -9,21 +9,21 @@ const {
 
 const battle_text = require('./lib/battle_text');
 
-class BattleDialogue extends JSONer {
+class BattleQuips extends JSONer {
   constructor (fetch) {
     super();
 
     this.type = new Reader({
-      offset: 0xD0D000,
+      offset: 0xCFDFE0,
       type: new PointerTable({
         size: 256,
-        start: 0xD0D200,
-        warn: 0xD0FD00,
-        offset: 0xD00000,
+        start: 0xCFE1E0,
+        warn: 0xCFF450,
+        offset: 0xCF0000,
         type: battle_text
       })
     });
   }
 }
 
-module.exports = BattleDialogue;
+module.exports = BattleQuips;
