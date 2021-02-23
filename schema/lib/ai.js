@@ -4,6 +4,7 @@ const {
   Empty,
   UInt,
   Enum,
+  EnumInfo,
   Fixed,
   Bits,
   List,
@@ -123,6 +124,8 @@ class AIReader extends Closure {
     const spell_enum = new Enum(spell_names);
     const item_names = get_values(fetch('items'));
     const item_enum = new Enum(item_names);
+    const captions = get_values(fetch('battle_quips'), item => item);
+    const captions_enum = new Enum(captions);
 
     const ai_script = new List({
       size: data => (data[data.length - 1] || {}).name === 'End Script',
@@ -148,7 +151,13 @@ class AIReader extends Closure {
           },
           0xF3: {
             name: 'Small Caption',
-            type: new List({ size: 2, type: new UInt() })
+            type: new Struct([{
+              name: 'Text',
+              type: captions_enum
+            }, {
+              name: 'Unused',
+              type: new Fixed(0x00)
+            }])
           },
           0xF4: {
             name: 'Use Random Command',
@@ -185,7 +194,7 @@ class AIReader extends Closure {
                 'Remove (preserve HP)',
                 'Unhide w/ current HP',
                 'Hide',
-                'Hide [dup]',
+                'Hide [dup]', // TODO: Rename (prevents battle end)
                 'Kill'
               ])
             }, {
