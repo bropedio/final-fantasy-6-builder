@@ -13,6 +13,7 @@ const {
 
 const DTEText = require('./lib/dte_text');
 const script_table = require('./lib/script_table');
+const NPCs = require('./lib/npcs');
 
 /* Locations */
 
@@ -20,7 +21,7 @@ class Locations extends JSONer {
   constructor (fetch) {
     super();
 
-    this.type = new Reader({
+    const base_location = new Reader({
       offset: 0xED8F00,
       type: new List({
         size: 0x19F, // Many more locations than names...
@@ -117,6 +118,14 @@ class Locations extends JSONer {
         }])
       })
     });
+
+    this.type = new ParallelList([{
+      name: 'Data',
+      type: base_location
+    }, {
+      name: 'NPCs',
+      type: new NPCs(fetch)
+    }]);
   }
 }
 
