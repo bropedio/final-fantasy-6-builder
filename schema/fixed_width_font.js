@@ -17,7 +17,7 @@ class FixedWidthFont extends Closure {
     this.type = new Reader({
       offset: 0xC487C0,
       type: new List({
-        size: 256,
+        size: 128,
         type: new Tile({
           bpp: 2
         })
