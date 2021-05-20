@@ -15,6 +15,7 @@ const DTEText = require('./lib/dte_text');
 const script_table = require('./lib/script_table');
 const NPCs = require('./lib/npcs');
 const Treasures = require('./lib/treasures');
+const location_names = require('./lib/location_names');
 
 /* Locations */
 
@@ -130,6 +131,15 @@ class Locations extends JSONer {
       name: 'Treasures',
       type: new Treasures(fetch)
     }]);
+  }
+
+  parse (json) {
+    return this.type.parse(JSON.parse(json).map(wrap => wrap.item));
+  }
+  format (data) {
+    return JSON.stringify(this.type.format(data).map((item, i) => {
+      return { id: location_names[i], item: item };
+    }), null, 4);
   }
 }
 
