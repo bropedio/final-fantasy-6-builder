@@ -194,6 +194,7 @@ class NPCs extends Closure {
       type: new SplitList({
         size: 0x1A0,
         chunk_size: 9,
+        offset: 0x1A0 * 2 + 2,
         type: new Struct([{
           name: 'Event Address',
           type: new UInt('word')

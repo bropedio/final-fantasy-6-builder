@@ -57,6 +57,7 @@ class Treasures extends Closure {
       type: new SplitList({
         size: 0x19F,
         chunk_size: 5,
+        offset: 0x00,
         type: new Fork({
           control: new Looker((rom) => {
             const coords = rom.read('word');

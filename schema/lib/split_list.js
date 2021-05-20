@@ -16,7 +16,7 @@ class SplitList {
     this.size = input.size;
     this.type = input.type;
     this.chunk_size = input.chunk_size;
-    this.data_offset = this.size * 2 + 2;
+    this.offset = input.offset
 
     this.pointer_list = new List({
       size: this.size + 1,
@@ -48,7 +48,7 @@ class SplitList {
       const start = pointers[pointers.length - 1];
       pointers.push(sublist.length * this.chunk_size + start);
       return pointers;
-    }, [this.data_offset]);
+    }, [this.offset]);
 
     this.pointer_list.encode(pointers, rom);
 
