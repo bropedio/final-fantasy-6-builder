@@ -18,10 +18,10 @@ const { get_values } = require('rom-builder');
 /* Treasures */
 
 const types = {
-  0x00: 'Empty',
-  0x02: 'Monster',
-  0x04: 'Item',
-  0x08: 'Gold'
+  0x04: 'Empty',
+  0x10: 'Monster',
+  0x20: 'Item',
+  0x40: 'Gold'
 };
 
 function get_type (contents) {
@@ -35,13 +35,9 @@ function get_type (contents) {
       name: 'Event ID',
       type: new UInt('word')
     }, {
-      mask: 0xF000,
+      mask: 0xFE00,
       name: 'Type',
       type: new Enum(types)
-    }, {
-      mask: 0x0E00,
-      name: 'Unused Data',
-      type: new UInt()
     }])
   }, {
     name: 'Contents',
@@ -64,7 +60,7 @@ class Treasures extends Closure {
         type: new Fork({
           control: new Looker((rom) => {
             const coords = rom.read('word');
-            const type = (rom.read('word') & 0xF000) >> 12;
+            const type = (rom.read('word') & 0xFE00) >> 9;
             return types[type];
           }),
           map: {
