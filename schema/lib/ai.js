@@ -261,7 +261,7 @@ class AIReader extends Closure {
                 'Boss death animation'
               ])
             }, {
-              name: 'Arg2',
+              name: 'Arg2', // Usually a bitmask of the enemy to target
               type: new UInt()
             }, {
               name: 'Arg3',
