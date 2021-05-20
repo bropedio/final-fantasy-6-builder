@@ -14,6 +14,7 @@ const {
 const DTEText = require('./lib/dte_text');
 const script_table = require('./lib/script_table');
 const NPCs = require('./lib/npcs');
+const Treasures = require('./lib/treasures');
 
 /* Locations */
 
@@ -125,6 +126,9 @@ class Locations extends JSONer {
     }, {
       name: 'NPCs',
       type: new NPCs(fetch)
+    }, {
+      name: 'Treasures',
+      type: new Treasures(fetch)
     }]);
   }
 }
