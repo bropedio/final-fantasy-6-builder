@@ -4,14 +4,22 @@ const {
   JSONer,
   ParallelList,
   List,
+  Bits,
+  Bool,
   UInt,
+  Enum,
+  EnumWord,
   Struct,
   Reader,
   PointerTable,
   IndexTable,
 } = require('rom-builder').types;
 
+const { get_values } = require('rom-builder');
+
 const DTEText = require('./lib/dte_text');
+const IndexList = require('./lib/index_list');
+const CondensedList = require('./lib/condensed_list');
 const script_table = require('./lib/script_table');
 const NPCs = require('./lib/npcs');
 const Treasures = require('./lib/treasures');
@@ -22,6 +30,13 @@ const location_names = require('./lib/location_names');
 class Locations extends JSONer {
   constructor (fetch) {
     super();
+
+    const formation_enum = new EnumWord(get_values(fetch('formations'), form => {
+      return Array(6).fill().map((_, i) => {
+        const name = form.Enemies[`Monster-${i+1} ID`];
+        return name === '-' ? null : name;
+      }).filter(Boolean).join(',');
+    }));
 
     const base_location = new Reader({
       offset: 0xED8F00,
@@ -125,11 +140,46 @@ class Locations extends JSONer {
       name: 'Data',
       type: base_location
     }, {
-      name: 'NPCs',
-      type: new NPCs(fetch)
+      name: 'Encounter Rate',
+      type: new Reader({
+        offset: 0xCF5880,
+        type: new CondensedList({
+          splits: 4,
+          full_size: 0x19F,
+          type: new Enum(['Normal', 'Fewer', 'More', 'Most']) // TODO
+        })
+      })
+    }, {
+      name: 'Packs',
+      type: new Reader({
+        offset: 0xCF5600,
+        type: new List({
+          size: 0x19F,
+          type: new IndexList({
+            offset: 0xCF4800,
+            chunk: 8,
+            warn: 0xCF5000,
+            type: new List({
+              size: 4,
+              type: new Bits([{
+                mask: 0x7FFF,
+                name: 'Formation',
+                type: formation_enum
+              }, {
+                mask: 0x8000,
+                name: 'Random?',
+                type: new Bool()
+              }])
+            })
+          })
+        })
+      })
     }, {
       name: 'Treasures',
       type: new Treasures(fetch)
+    }, {
+      name: 'NPCs',
+      type: new NPCs(fetch)
     }]);
   }
 
