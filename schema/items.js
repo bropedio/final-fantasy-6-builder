@@ -301,7 +301,7 @@ class Items extends JSONer {
       }), template({
         Weapon: {
           name: 'Empty-1',
-          type: new Fixed(0x00)
+          type: new Enum({ 0x00: 'N/A', 0xFF: 'Null' })
         },
         Item: {
           name: 'Status-2',
@@ -327,7 +327,7 @@ class Items extends JSONer {
       }), template({
         Weapon: {
           name: 'Empty-3',
-          type: new Fixed(0x00)
+          type: new Enum({ 0x00: 'N/A', 0xFF: 'Null' })
         },
         Item: {
           name: 'Status-4',
@@ -408,7 +408,7 @@ class Items extends JSONer {
     }
 
     const item_data = new List({
-      size: 255,
+      size: 0x100,
       type: new Fork({
         control: new Looker((rom) => {
           return {
@@ -434,7 +434,7 @@ class Items extends JSONer {
       type: new Reader({
         offset: 0xD2B300,
         type: new List({
-          size: 255,
+          size: 0x100,
           type: new Text(13, table)
         })
       })
@@ -443,7 +443,7 @@ class Items extends JSONer {
       type: new Reader({
         offset: 0xED7AA0,
         type: new PointerTable({
-          size: 0xFF,
+          size: 0x100,
           offset: 0xED6400,
           warn: 0xED77A0,
           type: new TextLong(table)

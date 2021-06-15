@@ -24,7 +24,7 @@ class Characters extends JSONer {
     super();
 
     const item_names = get_values(fetch('items'));
-    const item_enum = new Enum({ 0xFF: '[n/a]' }, item_names);
+    const item_enum = new Enum(item_names);
 
     this.type = new ParallelList([{
       name: 'Name',
