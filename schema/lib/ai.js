@@ -21,7 +21,6 @@ const { get_values } = require('rom-builder');
 /* Extra Type Definitions */
 
 const element_enum = require('./elements');
-const { command_enum } = require('./commands');
 
 const target_enum = new Enum(
   range(0x30, 6, i => `Enemy #${i - 1}`),
@@ -126,6 +125,12 @@ class AIReader extends Closure {
     const item_enum = new Enum(item_names);
     const captions = get_values(fetch('battle_quips'), item => item);
     const captions_enum = new Enum(captions);
+    const commands = get_values(fetch('command_names'), x => x.trim());
+    const command_enum = new Enum({
+      ...commands,
+      0xFE: 'DoNothing',
+      0xFF: '-'
+    });
 
     const ai_script = new List({
       size: data => (data[data.length - 1] || {}).name === 'End Script',

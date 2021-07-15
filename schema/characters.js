@@ -15,7 +15,6 @@ const {
 
 const { get_values } = require('rom-builder');
 const table = require('./lib/name_table');
-const { command_enum } = require('./lib/commands');
 
 /* Characters */
 
@@ -23,6 +22,12 @@ class Characters extends JSONer {
   constructor (fetch) {
     super();
 
+    const commands = get_values(fetch('command_names'), x => x.trim());
+    const command_enum = new Enum({
+      ...commands,
+      0xFE: 'DoNothing',
+      0xFF: '-'
+    });
     const item_names = get_values(fetch('items'));
     const item_enum = new Enum(item_names);
 
