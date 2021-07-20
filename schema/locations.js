@@ -22,6 +22,7 @@ const IndexList = require('./lib/index_list');
 const CondensedList = require('./lib/condensed_list');
 const script_table = require('./lib/script_table');
 const NPCs = require('./lib/npcs');
+const TileData = require('./lib/tile_data');
 const Treasures = require('./lib/treasures');
 const location_names = require('./lib/location_names');
 
@@ -180,6 +181,9 @@ class Locations extends JSONer {
     }, {
       name: 'NPCs',
       type: new NPCs(fetch)
+    }, {
+      name: 'Tile Data',
+      type: new TileData(fetch)
     }]);
   }
 
