@@ -2,7 +2,9 @@
 
 const {
   Closure,
-  Reader
+  Reader,
+  Struct,
+  UInt
 } = require('rom-builder').types;
 
 const SplitList = require('./split_list');
@@ -31,7 +33,7 @@ class TileData extends Closure {
           type: new UInt('sword')
         }])
       })
-    }):
+    });
   }
 }
 
