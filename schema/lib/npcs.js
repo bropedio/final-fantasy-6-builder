@@ -183,7 +183,6 @@ const sprite = new Enum({
   0xA4: 'Bird flying sideways'
 });
 
-// TODO: Eventually, this should nest inside "maps.js"
 class NPCs extends Closure {
   constructor (fetch) {
     super();
