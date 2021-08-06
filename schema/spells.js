@@ -106,10 +106,10 @@ class Spells extends JSONer {
         })
       }, {
         name: 'MP Cost',
-        type: new UInt()
+        type: new UInt('byte', 10)
       }, {
         name: 'Power',
-        type: new UInt()
+        type: new UInt('byte', 10)
       }, {
         name: 'Flags-4',
         type: new Bitmask({
@@ -126,7 +126,7 @@ class Spells extends JSONer {
         })
       }, {
         name: 'Hitrate',
-        type: new UInt()
+        type: new UInt('byte', 10)
       }, {
         name: 'Special Effect',
         type: new UInt() // TODO: Name these

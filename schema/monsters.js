@@ -50,43 +50,43 @@ class Monsters extends JSONer {
           size: 384,
           type: new Struct([{
             name: 'Speed',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Attack',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Hit Rate',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Evasion',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Magic Evasion',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Defense',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Magic Defense',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Magic Power',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'HP',
-            type: new UInt('word')
+            type: new UInt('word', 10)
           }, {
             name: 'MP',
-            type: new UInt('word')
+            type: new UInt('word', 10)
           }, {
             name: 'Experience',
-            type: new UInt('word')
+            type: new UInt('word', 10)
           }, {
             name: 'Gold',
-            type: new UInt('word')
+            type: new UInt('word', 10)
           }, {
             name: 'Level',
-            type: new UInt()
+            type: new UInt('byte', 10)
           }, {
             name: 'Ragnarok Data',
             type: new UInt()
