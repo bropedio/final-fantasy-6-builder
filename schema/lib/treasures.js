@@ -17,12 +17,18 @@ const { get_values } = require('rom-builder');
 
 /* Treasures */
 
-const types = {
+const real_types = {
   0x04: 'Empty',
   0x10: 'Monster',
   0x20: 'Item',
   0x40: 'Gold'
 };
+
+const types = { ...real_types };
+
+for (let i = 0; i < 256; i++) {
+  types[i] = types[i] || `0x${i.toString(16)}`;
+}
 
 function get_type (contents) {
   return new Struct([{
@@ -62,7 +68,7 @@ class Treasures extends Closure {
           control: new Looker((rom) => {
             const coords = rom.read('word');
             const type = (rom.read('word') & 0xFE00) >> 9;
-            return types[type] || 'Item';
+            return real_types[type] || 'Item';
           }),
           map: {
             Empty: { name: 'Empty', type: get_type(new UInt()) },
