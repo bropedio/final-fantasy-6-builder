@@ -55,7 +55,7 @@ class Treasures extends Closure {
       offset: 0xED82F4,
       warn: 0xED8E5A,
       type: new SplitList({
-        size: 0x1A0,
+        size: 0x19E,
         chunk_size: 5,
         offset: 0x00,
         type: new Fork({
