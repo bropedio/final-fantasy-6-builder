@@ -65,7 +65,7 @@ class Treasures extends Closure {
             return types[type] || 'Item';
           }),
           map: {
-            Empty: { name: 'Empty', type: get_type(new Fixed(0x00)) },
+            Empty: { name: 'Empty', type: get_type(new UInt()) },
             Monster: { name: 'Monster-in-box', type: get_type(new UInt()) },
             Item: { name: 'Item', type: get_type(item_enum) },
             Gold: { name: 'GP (x100)', type: get_type(new UInt('byte', 10)) }
