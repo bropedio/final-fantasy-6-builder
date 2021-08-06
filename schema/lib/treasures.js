@@ -62,7 +62,7 @@ class Treasures extends Closure {
           control: new Looker((rom) => {
             const coords = rom.read('word');
             const type = (rom.read('word') & 0xFE00) >> 9;
-            return types[type];
+            return types[type] || 'Item';
           }),
           map: {
             Empty: { name: 'Empty', type: get_type(new Fixed(0x00)) },
