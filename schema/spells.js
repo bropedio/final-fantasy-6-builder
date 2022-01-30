@@ -249,7 +249,7 @@ class Spells extends JSONer {
         type: new Reader({
           offset: 0xED7A70,
           type: new PointerTable({
-            size: 12, // space for 24?
+            size: 24,
             offset: 0xED77A0,
             warn: 0xED7A70,
             type: new TextLong(table)
