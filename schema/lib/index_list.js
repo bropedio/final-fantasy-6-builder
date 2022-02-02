@@ -9,10 +9,13 @@ class IndexList extends types.Closure {
     this.warn = input.warn;
     this.chunk = input.chunk;
     this.index = new types.UInt();
-
+  }
+  initialize (api) {
     this.values = [];
     this.indexes = {};
     this.map = {};
+    this.index.initialize(api);
+    super.initialize(api);
   }
   add_to_map (key, data) {
     if (!this.map[key]) {
