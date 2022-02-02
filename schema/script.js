@@ -17,7 +17,7 @@ module.exports = new types.File({
       wrap: 0xCE0000,
       warn: 0xCEF100,
       type: new types.Transformer({
-        type: new types.Ref('dtes'),
+        type: new types.Ref('dtes', 'decoded'),
         transform: function (dtes) {
           return new DTEText({
             dtes: dtes,
