@@ -1,0 +1,71 @@
+{
+  "name": "spell_descriptions",
+  "type": ["flat_struct", [{
+    "name": "magic_descriptions",
+    "type": ["reader", {
+      "offset": 0xD8CF80,
+      "type": ["pointer_table", {
+        "size": 54,
+        "offset": 0xD8C9A0,
+        "warn": 0xD8CEA0,
+        "type": ["string_long", "name_table"]
+      }]
+    }]
+  }, {
+    "name": "esper_descriptions",
+    "type": ["reader", {
+      "offset": 0xCFFE40,
+      "type": ["pointer_table", {
+        "size": 27,
+        "offset": 0xCF3940,
+        "warn": 0xCF3C40,
+        "type": ["string_long", "name_table"]
+      }]
+    }]
+  }, {
+    "name": "misc_spell_descriptions",
+    "type": ["list", {
+      "size": 4,
+      "type": ["empty"]
+    }]
+  }, {
+    "name": "bushido_descriptions",
+    "type": ["reader", {
+      "offset": 0xCFFFAE,
+      "type": ["pointer_table", {
+        "size": 8,
+        "offset": 0xCFFD00,
+        "warn": 0xCFFE00,
+        "type": ["string_long", "name_table"]
+      }]
+    }]
+  }, {
+    "name": "blitz_descriptions",
+    "type": ["reader", {
+      "offset": 0xCFFF9E,
+      "type": ["pointer_table", {
+        "size": 8,
+        "offset": 0xCFFC00,
+        "warn": 0xCFFD00,
+        "type": ["string_long", "name_table"]
+      }]
+    }]
+  }, {
+    "name": "dance_and_rage_descriptions",
+    "type": ["list", {
+      "size": 38,
+      "type": ["empty"]
+    }]
+  }, {
+    "name": "lore_descriptions",
+    "type": ["reader", {
+      "offset": 0xED7A70,
+      "type": ["pointer_table", {
+        "size": 24,
+        "offset": 0xED77A0,
+        "warn": 0xED7A70,
+        "type": ["string_long", "name_table"]
+      }]
+    }]
+  }]]
+}

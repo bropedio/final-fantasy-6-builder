@@ -1,0 +1,66 @@
+{
+  "name": "spell_names",
+  "type": ["flat_struct", [{
+    "name": "magic_names",
+    "type": ["reader", {
+      "offset": 0xE6F567,
+      "type": ["list", {
+        "size": 54,
+        "type": ["string", {
+          "length": 7,
+          "table": "name_table"
+        }]
+      }]
+    }]
+  }, {
+    "name": "esper_names",
+    "type": ["reader", {
+      "offset": 0xE6F6E1,
+      "type": ["list", {
+        "size": 27,
+        "type": ["string", {
+          "length": 8,
+          "table": "name_table"
+        }]
+      }]
+    }]
+  }, {
+    "name": "spell_names_a",
+    "type": ["reader", {
+      "offset": 0xE6F7B9,
+      "type": ["list", {
+        "size": 4,
+        "type": ["string", {
+          "length": 10,
+          "table": "name_table"
+        }]
+      }]
+    }]
+  }, {
+    "_comment": "These could be inlined with the above and below",
+    "name": "bushido_names",
+    "type": ["reader", {
+      "offset": 0xCF3C40,
+      "type": ["list", {
+        "size": 8,
+        "type": ["string", {
+          "length": 12,
+          "table": "name_table"
+        }]
+      }]
+    }]
+  }, {
+    "_comment": "Are there more to handle, like Reprisal?",
+    "name": "spell_names_b",
+    "type": ["reader", {
+      "offset": 0xE6F831,
+      "type": ["list", {
+        "size": 162,
+        "type": ["string", {
+          "length": 10,
+          "table": "name_table"
+        }]
+      }]
+    }]
+  }]]
+}

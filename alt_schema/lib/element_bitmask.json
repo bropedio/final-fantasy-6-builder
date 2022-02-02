@@ -1,0 +1,13 @@
+{
+  "name": "element_bitmask",
+  "type": ["bitmask", [
+    "Fire",
+    "Ice",
+    "Bolt",
+    "Dark",
+    "Wind",
+    "Holy",
+    "Earth",
+    "Water"
+  ]]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "spells",
+  "type": ["parallel_list", {
+    "name": "name",
+    "type": ["lib", "spell_names"]
+  }, {
+    "name": "description",
+    "type": ["lib", "spell_descriptions"]
+  }, {
+    "name": "data",
+    "type": ["lib", "spell_data"]
+  }]
+}

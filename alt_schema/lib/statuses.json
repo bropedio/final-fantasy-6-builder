@@ -1,0 +1,64 @@
+[{
+  "name": "status_1",
+  "type": ["bitmask", [
+    "Dark",
+    "Zombie",
+    "Poison",
+    "Magitek",
+    "Vanish",
+    "Imp",
+    "Petrify",
+    "Death"
+  ]]
+}, {
+  "name": "status_2",
+  "type": ["bitmask", [
+    "Doom",
+    "Near Fatal",
+    "Image",
+    "Mute",
+    "Bserk",
+    "Muddle",
+    "Sap",
+    "Sleep"
+  ]]
+}, {
+  "name": "status_3",
+  "type": ["bitmask", [
+    "Dance",
+    "Regen",
+    "Slow",
+    "Haste",
+    "Stop",
+    "Shell",
+    "Safe",
+    "Reflect"
+  ]]
+}, {
+  "name": "status_4",
+  "type": ["bitmask", [
+    "Rage",
+    "Frozen",
+    "Safety",
+    "Morph",
+    "Chanting",
+    "Hidden",
+    "Dog Block",
+    "Float"
+  ]]
+}, {
+  "name": "status_bitmask",
+  "type": ["flat_struct", [{
+    "name": "status-1",
+    "type": ["lib", "status_1"]
+  }, {
+    "name": "status-2",
+    "type": ["lib", "status_2"]
+  }, {
+    "name": "status-3",
+    "type": ["lib", "status_3"]
+  }, {
+    "name": "status-4",
+    "type": ["lib", "status_4"]
+  }]]
+}]

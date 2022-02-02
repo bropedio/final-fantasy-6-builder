@@ -1,0 +1,98 @@
+{
+  "name": "spell_data",
+  "offset": 0xC46AC0,
+  "type": ["list", {
+    "size": 255,
+    "type": ["struct", [{
+      "name": "Targeting",
+      "type": ["bits", [{
+        "name": "Auto",
+        "mask": 0x10,
+        "type": ["bool"]
+      }, {
+        "name": "Rule",
+        "mask": 0xEF,
+        "type": ["enum", {
+          "0x00": "Empty",
+          "0x61": "Spread Hurt",
+          "0x63": "Spread Foes",
+          "0x41": "Hurt One",
+          "0x43": "One Foe",
+          "0x04": "Everyone",
+          "0x6A": "Foe Group",
+          "0x6E": "All Foes",
+          "0x03": "One Ally",
+          "0x2A": "Ally Group",
+          "0x01": "Help One",
+          "0x2E": "All Allies",
+          "0x21": "Spread Help",
+          "0x29": "0x29",
+          "0x02": "Self",
+          "0x69": "0x69",
+          "0x6B": "0x6B",
+          "0xC0": "0xC0"
+        }]
+      }]]
+    }, {
+      "name": "Element",
+      "type": ["lib", "element_bitmask"]
+    }, {
+      "name": "Flags-1",
+      "type": ["bitmask", [
+        "Physical",
+        "Instant Death",
+        "Target Dead Only",
+        "Reverse on Undead",
+        "Randomize Target'",
+        "Ignore Defense",
+        "No Split Damage",
+        "Abort on Allies"
+      ]]
+    }, {
+      "name": "Flags-2",
+      "type": ["bitmask", [
+        "Usable on Field",
+        "Unreflectable",
+        "Learnable Lore",
+        "Runicable",
+        "Warps",
+        "Retarget if Invalid",
+        "Suicidal",
+        "MP Damage"
+      ]]
+    }, {
+      "name": "Flags-3",
+      "type": ["bitmask", [
+        "Heals",
+        "Drains",
+        "Lifts Status",
+        "Toggles Status",
+        "Stamina Evasion",
+        "Cannot Miss",
+        "Abort on Enemies",
+        "Fractional Dmg"
+      ]]
+    }, {
+      "name": "MP Cost",
+      "type": ["uint", "byte", 10]
+    }, {
+      "name": "Power",
+      "type": ["uint", "byte", 10]
+    }, {
+      "name": "Flags-4",
+      "type": ["bitmask", [
+        "Miss if Status Unchanged",
+        "Show Msg"
+      ]]
+    }, {
+      "name": "Hitrate",
+      "type": ["uint", "byte", 10]
+    }, {
+      "name": "Special Effect",
+      "type": ["uint", "byte", 16]
+    }, {
+      "name": "Status Effect(s)",
+      "type": "status_bitmask"
+    }]]
+  }]
+}
