@@ -1,9 +1,10 @@
 "use strict";
 
-const {HiRom} = require('rom-builder');
+const { HiRom, types } = require('rom-builder');
 
-class LZSS {
+class LZSS extends types.Empty {
   constructor (input) {
+    super();
     this.type = input && input.type;
   }
   decode (rom) {

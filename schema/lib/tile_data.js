@@ -1,40 +1,26 @@
 "use strict";
 
-const {
-  Closure,
-  Reader,
-  Struct,
-  UInt
-} = require('rom-builder').types;
-
+const { types } = require('rom-builder');
 const SplitList = require('./split_list');
 
 /* TileData */
 
-class TileData extends Closure {
-  constructor (fetch) {
-    super();
-
-    this.type = new Reader({
-      offset: 0xC40000,
-      warn: 0xC41A10,
-      type: new SplitList({
-        size: 0x1A0,
-        chunk_size: 5,
-        offset: 0x1A0 * 2 + 2,
-        type: new Struct([{
-          name: 'X Coord',
-          type: new UInt()
-        }, { 
-          name: 'Y Coord',
-          type: new UInt()
-        }, {
-          name: 'Event',
-          type: new UInt('sword')
-        }])
-      })
-    });
-  }
-}
-
-module.exports = TileData;
+module.exports = new types.Reader({
+  offset: 0xC40000,
+  warn: 0xC41A10,
+  type: new SplitList({
+    size: 0x1A0,
+    chunk_size: 5,
+    offset: 0x1A0 * 2 + 2,
+    type: new types.Struct([{
+      name: 'X Coord',
+      type: new types.UInt()
+    }, { 
+      name: 'Y Coord',
+      type: new types.UInt()
+    }, {
+      name: 'Event',
+      type: new types.UInt('sword')
+    }])
+  })
+});

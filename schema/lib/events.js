@@ -1,5 +1,7 @@
 "use strict";
 
+/* TODO: Update this file to new syntax, and get it working */
+
 const {
   Closure,
   List,
@@ -161,8 +163,9 @@ const event_bit_args = (count) => {
 
 /* Dynamic */
 
-class Dynamic {
+class Dynamic extends Empty {
   constructor (input) {
+    super();
     this.get_type = input.get_type;
   }
   decode (rom) {
@@ -338,8 +341,9 @@ const action_op = new Fork({
   }
 });
 
-class ActionQueue {
+class ActionQueue extends Empty {
   constructor () {
+    super();
     this.op = action_op;
     this.control = new Bits([{
       mask: 0x80,

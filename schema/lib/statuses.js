@@ -1,12 +1,8 @@
 "use strict";
 
-const {
-  Bitmask,
-  Enum,
-  Struct
-} = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-const status_1 = new Bitmask({
+const status_1 = new types.Bitmask({
   flags: [
     'Dark',
     'Zombie',
@@ -19,7 +15,7 @@ const status_1 = new Bitmask({
   ]
 });
 
-const status_2 = new Bitmask({
+const status_2 = new types.Bitmask({
   flags: [
     'Doom',
     'Near Fatal',
@@ -32,7 +28,7 @@ const status_2 = new Bitmask({
   ]
 });
 
-const status_3 = new Bitmask({
+const status_3 = new types.Bitmask({
   flags: [
     'Dance',
     'Regen',
@@ -45,7 +41,7 @@ const status_3 = new Bitmask({
   ]
 });
 
-const status_4 = new Bitmask({
+const status_4 = new types.Bitmask({
   flags: [
     'Rage',
     'Frozen',
@@ -58,7 +54,7 @@ const status_4 = new Bitmask({
   ]
 });
 
-const all_statuses = new Struct([{
+const all_statuses = new types.Struct([{
   name: 'Status-1',
   type: status_1
 }, {
@@ -72,7 +68,7 @@ const all_statuses = new Struct([{
   type: status_4
 }]);
 
-const status_enum = new Enum([
+const status_enum = new types.Enum([
   'Dark',
   'Zombie',
   'Poison',

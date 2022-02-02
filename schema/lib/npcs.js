@@ -1,21 +1,11 @@
 "use strict";
 
-const {
-  Closure,
-  Reader,
-  List,
-  Struct,
-  UInt,
-  Bool,
-  Bits,
-  Enum
-} = require('rom-builder').types;
-
+const { types } = require('rom-builder');
 const SplitList = require('./split_list');
 
 /* NPCs */
 
-const sprite = new Enum({
+const sprite = new types.Enum({
   0x00: 'Terra',
   0x01: 'Locke',
   0x02: 'Cyan',
@@ -183,104 +173,96 @@ const sprite = new Enum({
   0xA4: 'Bird flying sideways'
 });
 
-class NPCs extends Closure {
-  constructor (fetch) {
-    super();
-
-    this.type = new Reader({
-      offset: 0xC41A10,
-      warn: 0xC46AC0, // Spell Data starts here
-      type: new SplitList({
-        size: 0x1A0,
-        chunk_size: 9,
-        offset: 0x1A0 * 2 + 2,
-        type: new Struct([{
-          name: 'Event Address',
-          type: new UInt('word')
-        }, {
-          name: 'Event Misc',
-          type: new Bits([{
-            mask: 0x0003,
-            name: 'Event Bank',
-            type: new UInt()
-          }, {
-            mask: 0x001C,
-            name: 'Palette',
-            type: new UInt()
-          }, {
-            mask: 0x0020,
-            name: 'Background Scrolls',
-            type: new Bool()
-          }, {
-            mask: 0xFFC0,
-            name: 'Visibility Event Bit',
-            type: new UInt('word')
-          }])
-        }, {
-          name: 'Position Data',
-          type: new Bits([{
-            mask: 0x007F,
-            name: 'X Position',
-            type: new UInt()
-          }, {
-            mask: 0x0080,
-            name: 'Show rider in vehicle',
-            type: new Bool()
-          }, {
-            mask: 0x3F00,
-            name: 'Y Position',
-            type: new UInt()
-          }, {
-            mask: 0xC000,
-            name: 'Speed',
-            type: new UInt()
-          }])
-        }, {
-          name: 'Sprite',
-          type: sprite
-        }, {
-          name: 'Miscellaneous',
-          type: new Bits([{
-            mask: 0x000F,
-            name: 'Movement Type',
-            type: new UInt()
-          }, {
-            mask: 0x0030,
-            name: 'Map Layer',
-            type: new UInt()
-          }, {
-            mask: 0x00C0,
-            name: 'Vehicle',
-            type: new UInt()
-          }, {
-            mask: 0x0300,
-            name: 'Start Direction',
-            type: new UInt()
-          }, {
-            mask: 0x0400,
-            name: 'No Graphic Change',
-            type: new Bool()
-          }, {
-            mask: 0x1800,
-            name: 'Background Layer',
-            type: new UInt()
-          }, {
-            mask: 0x2000,
-            name: 'Unknown 0x20',
-            type: new Bool()
-          }, {
-            mask: 0x4000,
-            name: 'Mirror',
-            type: new Bool()
-          }, {
-            mask: 0x8000,
-            name: 'Unknown 0x80',
-            type: new Bool()
-          }])
-        }])
-      })
-    });
-  }
-}
-
-module.exports = NPCs;
+module.exports = new types.Reader({
+  offset: 0xC41A10,
+  warn: 0xC46AC0, // Spell Data starts here
+  type: new SplitList({
+    size: 0x1A0,
+    chunk_size: 9,
+    offset: 0x1A0 * 2 + 2,
+    type: new types.Struct([{
+      name: 'Event Address',
+      type: new types.UInt('word')
+    }, {
+      name: 'Event Misc',
+      type: new types.Bits([{
+        mask: 0x0003,
+        name: 'Event Bank',
+        type: new types.UInt()
+      }, {
+        mask: 0x001C,
+        name: 'Palette',
+        type: new types.UInt()
+      }, {
+        mask: 0x0020,
+        name: 'Background Scrolls',
+        type: new types.Bool()
+      }, {
+        mask: 0xFFC0,
+        name: 'Visibility Event Bit',
+        type: new types.UInt('word')
+      }])
+    }, {
+      name: 'Position Data',
+      type: new types.Bits([{
+        mask: 0x007F,
+        name: 'X Position',
+        type: new types.UInt()
+      }, {
+        mask: 0x0080,
+        name: 'Show rider in vehicle',
+        type: new types.Bool()
+      }, {
+        mask: 0x3F00,
+        name: 'Y Position',
+        type: new types.UInt()
+      }, {
+        mask: 0xC000,
+        name: 'Speed',
+        type: new types.UInt()
+      }])
+    }, {
+      name: 'Sprite',
+      type: sprite
+    }, {
+      name: 'Miscellaneous',
+      type: new types.Bits([{
+        mask: 0x000F,
+        name: 'Movement Type',
+        type: new types.UInt()
+      }, {
+        mask: 0x0030,
+        name: 'Map Layer',
+        type: new types.UInt()
+      }, {
+        mask: 0x00C0,
+        name: 'Vehicle',
+        type: new types.UInt()
+      }, {
+        mask: 0x0300,
+        name: 'Start Direction',
+        type: new types.UInt()
+      }, {
+        mask: 0x0400,
+        name: 'No Graphic Change',
+        type: new types.Bool()
+      }, {
+        mask: 0x1800,
+        name: 'Background Layer',
+        type: new types.UInt()
+      }, {
+        mask: 0x2000,
+        name: 'Unknown 0x20',
+        type: new types.Bool()
+      }, {
+        mask: 0x4000,
+        name: 'Mirror',
+        type: new types.Bool()
+      }, {
+        mask: 0x8000,
+        name: 'Unknown 0x80',
+        type: new types.Bool()
+      }])
+    }])
+  })
+});

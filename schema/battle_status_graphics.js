@@ -1,37 +1,26 @@
 "use strict";
 
-const {
-  Reader,
-  Tile,
-  List,
-  Closure,
-  JSONer
-} = require('rom-builder').types;
-
+const { types } = require('rom-builder');
 const LZSS = require('./lib/lzss');
 
-class BattleStatusGraphics extends Closure {
-  constructor (fetch) {
-    super();
-
-    this.type = new Reader({
-      offset: 0xD2E000,
-      type: new LZSS({
-        type: new List({
-          size: 300,
-          type: new Tile({
-            bpp: 4
-          })
+module.exports = new types.File({
+  name: 'BattleStatusGraphics',
+  extension: 'txt',
+  type: new types.Reader({
+    offset: 0xD2E000,
+    type: new LZSS({
+      type: new types.List({
+        size: 300,
+        type: new types.Tile({
+          bpp: 4
         })
       })
-    });
-  }
-  parse (string) {
+    })
+  }),
+  parser: function (string) {
     return this.type.parse(string.split('\n\n'));
-  }
-  format (data) {
+  },
+  formatter: function (data) {
     return this.type.format(data).join('\n\n');
   }
-}
-
-module.exports = BattleStatusGraphics;
+});

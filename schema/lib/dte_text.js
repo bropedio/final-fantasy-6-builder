@@ -1,15 +1,13 @@
-const {
-  Empty,
-  UInt,
-  List,
-  TextScript
-} = require('rom-builder').types;
+"use strict";
+
+const { types } = require('rom-builder');
 
 // TODO: Fix validation for line length. Or just change asm
-//       to always start a new line for character names???
+//       to always start a new types.line for character names???
 
-class DTEToken {
+class DTEToken extends types.Empty {
   constructor (a, b) {
+    super();
     this.value = [
       { name: 'default', data: a },
       { name: 'default', data: b }
@@ -23,7 +21,7 @@ class DTEToken {
   format () {}
 }
 
-class DTEText extends TextScript {
+class DTEText extends types.TextScript {
   constructor (input) {
     const dte_options = {};
     const dte_lookup = {};
@@ -48,39 +46,39 @@ class DTEText extends TextScript {
       map: {
         0x00: {
           name: 'end',
-          type: new Empty()
+          type: new types.Empty()
         },
         0x01: {
           name: 'line',
-          type: new Empty()
+          type: new types.Empty()
         },
         0x10: {
           name: 'pause',
-          type: new Empty()
+          type: new types.Empty()
         },
         0x11: {
           name: 'wait',
-          type: new UInt('byte', 10)
+          type: new types.UInt('byte', 10)
         },
         0x12: {
           name: 'frame',
-          type: new Empty()
+          type: new types.Empty()
         },
         0x13: {
           name: 'page',
-          type: new Empty()
+          type: new types.Empty()
         },
         0x14: {
           name: 'pad',
-          type: new UInt('byte', 10)
+          type: new types.UInt('byte', 10)
         },
         0x15: {
           name: 'choice',
-          type: new Empty()
+          type: new types.Empty()
         },
         0x16: {
           name: 'keyframes',
-          type: new UInt('byte', 10)
+          type: new types.UInt('byte', 10)
         },
         ...dte_options
       }

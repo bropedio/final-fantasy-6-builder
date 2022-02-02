@@ -1,18 +1,14 @@
 "use strict";
 
-const {
-  UInt,
-  Reader,
-  List
-} = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-class IndexList {
+class IndexList extends types.Closure {
   constructor (input) {
-    this.type = input.type;
+    super(input);
     this.offset = input.offset;
     this.warn = input.warn;
     this.chunk = input.chunk;
-    this.index = new UInt();
+    this.index = new types.UInt();
 
     this.values = [];
     this.indexes = {};
@@ -28,7 +24,7 @@ class IndexList {
     const index = this.index.decode(rom);
 
     if (!this.indexes[index]) {
-      const reader = new Reader({
+      const reader = new types.Reader({
         offset: this.offset + index * this.chunk,
         type: this.type
       });
@@ -43,10 +39,10 @@ class IndexList {
   }
   encode (data, rom) {
     if (this.values != null) {
-      const reader = new Reader({
+      const reader = new types.Reader({
         offset: this.offset,
         warn: this.warn,
-        type: new List({
+        type: new types.List({
           size: this.values.length,
           type: this.type
         })

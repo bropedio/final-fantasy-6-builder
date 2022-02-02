@@ -1,10 +1,8 @@
 "use strict";
 
-const {
-  Bitmask
-} = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-module.exports = new Bitmask({
+module.exports = new types.Bitmask({
   off_state: 'N/A',
   flags: [
     'Fire',

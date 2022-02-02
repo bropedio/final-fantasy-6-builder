@@ -1,26 +1,21 @@
 "use strict";
 
-const {
-  Closure,
-  List,
-  Bits,
-  UInt
-} = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-class CondensedList extends Closure {
+class CondensedList extends types.Closure {
   constructor (input) {
     super();
 
     this.splits = input.splits;
     this.piece = Math.pow(2, 8 / input.splits) - 1;
     this.full_size = input.full_size;
-    this.type = new List({
+    this.type = new types.List({
       size: input.size || input.full_size / input.splits,
-      type: new Bits(Array(input.splits).fill().map((_, i) => {
+      type: new types.Bits(Array(input.splits).fill().map((_, i) => {
         return {
           mask: this.piece << (i * 8 / input.splits),
           name: i,
-          type: input.type || new UInt()
+          type: input.type || new types.UInt()
         };
       }))
     });

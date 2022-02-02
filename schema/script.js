@@ -1,46 +1,39 @@
 "use strict";
 
-const {
-  Reader,
-  PointerTable,
-  Closure,
-  JSONer
-} = require('rom-builder').types;
-
+const { types } = require('rom-builder');
 const DTEText = require('./lib/dte_text');
 const script_table = require('./lib/script_table');
 
 /* Script */
 
-class Script extends Closure {
-  extension = 'txt';
-
-  constructor (fetch) {
-    super();
-
-    this.type = new Reader({
-      offset: 0xCCE600,
-      type: new PointerTable({
-        size: 3084,
-        offset: 0xCD0000,
-        wrap: 0xCE0000,
-        warn: 0xCEF100,
-        type: new DTEText({
-          dtes: fetch('dtes').data,
-          table: script_table
-        })
+module.exports = new types.File({
+  name: 'Script',
+  extension: 'txt',
+  type: new types.Reader({
+    offset: 0xCCE600,
+    type: new types.PointerTable({
+      size: 3084,
+      offset: 0xCD0000,
+      wrap: 0xCE0000,
+      warn: 0xCEF100,
+      type: new types.Transformer({
+        type: new types.Ref('dtes'),
+        transform: function (dtes) {
+          return new DTEText({
+            dtes: dtes,
+            table: script_table
+          });
+        }
       })
-    });
-  }
-
-  parse (txt) {
+    })
+  }),
+  parser: function (txt) {
     const lines = txt.split('\n').filter(Boolean);
     const valids = lines.filter(line => !/^\s*;/.test(line));
-    return super.parse(valids);
-  }
-
-  format (dialogues) {
-    dialogues = super.format(dialogues);
+    return this.type.parse(valids);
+  },
+  formatter: function (dialogues) {
+    dialogues = this.type.format(dialogues);
     const duplicates = {};
 
     return dialogues.map((dialogue, i) => {
@@ -55,82 +48,85 @@ class Script extends Closure {
       return `\n${header}\n${dialogue}\n`;
     }).join('');
   }
+});
 
-  validate (dialogues, ff6) {
-    return dialogues.map(validate_one).filter(Boolean);
+/**
+ * TODO: Implement support for validators
 
-    function validate_one (dialogue) {
-      var _this = this;
-      var full = '';
-      var word = '';
-      var text = '';
-      var error = null;
-      var MAX_X = 224; // maybe
-      var MAX_Y = 3;
+function validator (diaglogues, ff6) {
+  return dialogues.map(validate_one).filter(Boolean);
 
-      var coords = {
-        x: 0,
-        y: 0,
-        z: 0,
-        w: 0,
-        add_text: function (width) {
-          this.w += width;
-          word += text;
-        },
-        add_word: function (space) {
-          if (error) return;
-          var max = this.y == 3 ? 226 : MAX_X;
-          if (this.x + this.w > max) {
-            this.add_line();
-            this.add_word(space);
-          } else {
-            full += word + (space ? ' ' : '');
-            word = '';
-            this.x += this.w + (space ? 0x05 : 0);
-            this.w = 0;
-          }
-        },
-        add_line: function () {
-          full += `[auto-line: ${this.x}+${this.w}]\n`;
-          this.y++;
-          this.x = 0;
+  function validate_one (dialogue) {
+    var _this = this;
+    var full = '';
+    var word = '';
+    var text = '';
+    var error = null;
+    var MAX_X = 224; // maybe
+    var MAX_Y = 3;
 
-          if (this.y > MAX_Y) {
-            error = [
-              `X:${this.x}, Y:${this.y}, Z:${this.z}, W:${this.w}`,
-              full,
-              _this.stringify_one(dialogue)
-            ].join('\n');
-          }
-        },
-        add_page: function () {
-          full += '\n\n';
+    var coords = {
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 0,
+      add_text: function (width) {
+        this.w += width;
+        word += text;
+      },
+      add_word: function (space) {
+        if (error) return;
+        var max = this.y == 3 ? 226 : MAX_X;
+        if (this.x + this.w > max) {
+          this.add_line();
+          this.add_word(space);
+        } else {
+          full += word + (space ? ' ' : '');
+          word = '';
+          this.x += this.w + (space ? 0x05 : 0);
           this.w = 0;
-          this.x = 0;
-          this.y = 0;
-          this.z++;
         }
-      };
+      },
+      add_line: function () {
+        full += `[auto-line: ${this.x}+${this.w}]\n`;
+        this.y++;
+        this.x = 0;
 
-      dialogue.forEach(token => {
-        text = token.stringify();
-        token.print(coords);
-      });
+        if (this.y > MAX_Y) {
+          error = [
+            `X:${this.x}, Y:${this.y}, Z:${this.z}, W:${this.w}`,
+            full,
+            _this.stringify_one(dialogue)
+          ].join('\n');
+        }
+      },
+      add_page: function () {
+        full += '\n\n';
+        this.w = 0;
+        this.x = 0;
+        this.y = 0;
+        this.z++;
+      }
+    };
 
-      return error;
-    }
+    dialogue.forEach(token => {
+      text = token.stringify();
+      token.print(coords);
+    });
+
+    return error;
   }
-};
+}
 
 class CharWidths extends JSONer {
   constructor (ff6) {
     super();
 
-    this.type = new Reader({
+    this.type = new types.Reader({
       offset: 0xC48FC0,
-      type: new List({
+      type: new types.List({
         size: 0x80,
-        type: new UInt()
+        type: new types.UInt()
       })
     });
   }
@@ -189,4 +185,4 @@ const effects = {
   }
 };
 
-module.exports = Script;
+*/

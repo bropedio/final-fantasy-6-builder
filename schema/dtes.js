@@ -1,37 +1,26 @@
 "use strict";
 
-const {
-  Char,
-  List,
-  Reader,
-  JSONer
-} = require('rom-builder').types;
-
+const { types } = require('rom-builder');
 const script_table = require('./lib/script_table');
-const { get_values } = require('rom-builder');
 
 /* DTE Table */
 
-class DTEs extends JSONer {
-  constructor (fetch) {
-    super();
-
-    this.type = new Reader({
-      offset: 0xC0DFA0,
-      type: new List({
-        size: 128,
-        type: new List({
-          size: 2,
-          type: new Char(script_table)
-        })
+module.exports = new types.File({
+  name: 'DTEs',
+  extension: 'json',
+  type: new types.Reader({
+    offset: 0xC0DFA0,
+    type: new types.List({
+      size: 128,
+      type: new types.List({
+        size: 2,
+        type: new types.Char(script_table)
       })
-    });
-  }
-
-  optimize (dtes, fetch) {
-    const dialogues = fetch('script').data;
-    const locations = []; //fetch('locations').data.Data.map(x => x.Name);
-    const chars = dialogues.concat(locations).flat().map(obj => {
+    })
+  }),
+  optimizer: function (api) {
+    const dialogues = api.fetch('script').data;
+    const chars = dialogues.flat().map(obj => {
       return obj.name === 'default' ? obj.data : 0x00;
     });
     const dte_map = {};
@@ -70,7 +59,7 @@ class DTEs extends JSONer {
       return JSON.parse(key);
     });
   }
-}
+});
 
 class ProgressBar {
   constructor (input) {
@@ -99,5 +88,3 @@ class ProgressBar {
     }
   }
 }
-
-module.exports = DTEs;

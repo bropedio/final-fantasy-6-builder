@@ -1,26 +1,16 @@
 "use strict";
 
-const {
-  JSONer,
-  Reader,
-  List,
-  Text
-} = require('rom-builder').types;
-
+const { types } = require('rom-builder')
 const table = require('./lib/name_table');
 
-class CommandNames extends JSONer {
-  constructor (fetch) {
-    super();
-
-    this.type = new Reader({
-      offset: 0xD8CEA0,
-      type: new List({
-        size: 32,
-        type: new Text(7, table)
-      }) 
-    })
-  }
-}
-
-module.exports = CommandNames;
+module.exports = new types.File({
+  name: 'CommandNames',
+  extension: 'json',
+  type: new types.Reader({
+    offset: 0xD8CEA0,
+    type: new types.List({
+      size: 32,
+      type: new types.Text(7, table)
+    }) 
+  })
+});

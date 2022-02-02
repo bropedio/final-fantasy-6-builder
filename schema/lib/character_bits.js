@@ -1,8 +1,8 @@
 "use strict";
 
-const { Bitmask } = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-const character_bitmask = new Bitmask({
+const character_bitmask = new types.Bitmask({
   flags: [
     'Terra',
     'Locke',

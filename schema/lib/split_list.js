@@ -1,37 +1,32 @@
 "use strict";
 
-const {
-  Closure,
-  Reader,
-  List,
-  Struct,
-  UInt,
-  Bool,
-  Bits,
-  Enum
-} = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-class SplitList {
+class SplitList extends types.Closure {
   constructor (input) {
+    super(input);
     this.size = input.size;
-    this.type = input.type;
     this.chunk_size = input.chunk_size;
     this.offset = input.offset
 
-    this.pointer_list = new List({
+    this.pointer_list = new types.List({
       size: this.size + 1,
-      type: new UInt('word')
+      type: new types.UInt('word')
     });
+  }
+  initialize (api) {
+    this.pointer_list.initialize(api);
+    super.initialize(api);
   }
   decode (rom) {
     const pointers = this.pointer_list.decode(rom);
     let index = 0;
-    const main_list = new List({
+    const main_list = new types.List({
       size: list => {
         index = list.length;
         return list.length >= this.size;
       },
-      type: new List({
+      type: new types.List({
         type: this.type,
         size: list => {
           const section = pointers[index + 1] - pointers[index];
@@ -53,7 +48,7 @@ class SplitList {
     this.pointer_list.encode(pointers, rom);
 
     const flat_list = list.flat();
-    const main_list = new List({
+    const main_list = new types.List({
       size: flat_list.length,
       type: this.type
     });

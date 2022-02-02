@@ -1,18 +1,15 @@
 "use strict";
 
-const {
-  Bits,
-  Enum
-} = require('rom-builder').types;
+const { types } = require('rom-builder');
 
-module.exports = new Bits([{
+module.exports = new types.Bits([{
   mask: 0x10,
   name: 'Auto',
-  type: new Enum(['Off', 'On'])
+  type: new types.Enum(['Off', 'On'])
 }, {
   mask: 0xEF,
   name: 'Type',
-  type: new Enum({
+  type: new types.Enum({
     0x00: 'Empty',
     0x61: 'Spread Hurt',
     0x63: 'Spread Foes',

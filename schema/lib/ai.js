@@ -1,28 +1,11 @@
 "use strict";
 
-const {
-  Empty,
-  UInt,
-  Enum,
-  EnumInfo,
-  Fixed,
-  Bits,
-  List,
-  Struct,
-  Fork,
-  PointerTable,
-  Reader,
-  Bitmask,
-  Closure
-} = require('rom-builder').types;
-
-const { get_values } = require('rom-builder');
+const { types } = require('rom-builder');
+const element_enum = require('./elements');
 
 /* Extra Type Definitions */
 
-const element_enum = require('./elements');
-
-const target_enum = new Enum(
+const target_enum = new types.Enum(
   range(0x30, 6, i => `Enemy #${i - 1}`),
   {
     0x00: 'Terra',
@@ -66,7 +49,7 @@ const target_enum = new Enum(
   }
 );
 
-const status_enum = new Enum({
+const status_enum = new types.Enum({
   0x00: 'Dark',
   0x01: 'Zombie',
   0x02: 'Poison',
@@ -98,7 +81,7 @@ const status_enum = new Enum({
   0x1F: 'Float'
 });
 
-const enemy_bitmask = new Bitmask({
+const enemy_bitmask = new types.Bitmask({
   off_state: 'Self',
   flags: [
     'Enemy 0',
@@ -114,452 +97,454 @@ const enemy_bitmask = new Bitmask({
 
 /* AI */
 
-class AIReader extends Closure {
-  constructor (fetch) {
-    super();
+const spell_enum = new types.RefEnum({
+  ref: 'spells',
+  path: ['Name'],
+  inject: { 0xFE: '[empty]' }
+});
 
-    // TODO for spell list: 0xFE means "do nothing" for this op code
-    const spell_names = get_values(fetch('spells'));
-    const spell_enum = new Enum(spell_names);
-    const item_names = get_values(fetch('items'));
-    const item_enum = new Enum(item_names);
-    const captions = get_values(fetch('battle_quips'), item => item);
-    const captions_enum = new Enum(captions);
-    const commands = get_values(fetch('command_names'), x => x.trim());
-    const command_enum = new Enum({
-      ...commands,
-      0xFE: 'DoNothing',
-      0xFF: '-'
-    });
+const item_enum = new types.RefEnum({
+  ref: 'items',
+  path: ['Name']
+});
 
-    const ai_script = new List({
-      size: data => (data[data.length - 1] || {}).name === 'End Script',
-      type: new Fork({
-        control: new UInt(),
-        map: {
-          default: {
-            name: 'Use Spell',
-            use_control: true,
-            type: spell_enum
-          },
-          0xF0: {
-            name: 'Use Random Spell',
-            type: new List({ size: 3, type: spell_enum })
-          },
-          0xF1: {
-            name: 'Target',
-            type: target_enum
-          },
-          0xF2: {
-            name: 'Call Formation',
-            type: new List({ size: 3, type: new UInt() })
-          },
-          0xF3: {
-            name: 'Small Caption',
-            type: new Struct([{
-              name: 'Text',
-              type: captions_enum
-            }, {
-              name: 'Unused',
-              type: new Fixed(0x00)
-            }])
-          },
-          0xF4: {
-            name: 'Use Random Command',
-            type: new List({ size: 3, type: command_enum })
-          },
-          0xF5: {
-            name: 'Add/Remove',
-            type: new Struct([{
-              name: 'AnimationID',
-              type: new Enum([
-                'Hide',
-                'Smoke',
-                'Up',
-                'Left',
-                'Little Splash',
-                'Up [dup]',
-                'Big Splash',
-                'Left [dup]',
-                'Disintegrate Down',
-                'Disintegrate Up',
-                'Melt',
-                'Disintegrate Left',
-                'Boss',
-                'Flutter',
-                'Chadarnook',
-                'Hide [dup-1]',
-                'Hide [dup-2]',
-                'Kefka'
-              ])
-            }, {
-              name: 'Mode',
-              type: new Enum([
-                'Unhide w/ max HP',
-                'Remove (preserve HP)',
-                'Unhide w/ current HP',
-                'Hide',
-                'Hide [dup]', // TODO: Rename (prevents battle end)
-                'Kill'
-              ])
-            }, {
-              name: 'Targets',
-              type: enemy_bitmask
-            }])
-          },
-          0xF6: {
-            name: 'Throw/Use Item',
-            type: new Struct([
-              { name: 'Mode', type: new Enum(['Use', 'Throw']) },
-              { name: 'Common (2/3)', type: item_enum },
-              { name: 'Rare (1/3)', type: item_enum }
-            ])
-          },
-          0xF7: {
-            name: 'Trigger Event',
-            type: new UInt()
-          },
-          0xF8: {
-            name: 'Variable Math',
-            type: new Struct([{
-              name: 'Variable ID',
-              type: new UInt()
-            }, {
-              name: 'Math',
-              type: new Bits([{
-                mask: 0xC0,
-                name: 'Operator',
-                type: new Enum(['Set', 'Set [dup]', 'Add', 'Subtract'])
-              }, {
-                mask: 0x3F,
-                name: 'Operand',
-                type: new UInt()
-              }])
-            }])
-          },
-          0xF9: {
-            name: 'Variable Bit',
-            type: new Struct([
-              { name: 'Operation', type: new Enum(['Toggle', 'Set', 'Unset']) },
-              { name: 'VariableID', type: new UInt() },
-              { name: 'BitID', type: new UInt() }
-            ])
-          },
-          0xFA: {
-            name: 'Animation',
-            type: new Struct([{
-              name: 'AnimationID',
-              type: new Enum([
-                'Enemy flashes red',
-                'Enemy steps back (slow)',
-                'Enemy steps forward (slow)',
-                'Enemy steps back (fast)',
-                'Enemy steps forward (fast)',
-                'Characters run to right',
-                'Characters run to left',
-                'Enemy steps back 3',
-                'Enemy steps forward 3',
-                'Play sound',
-                'Kefka head',
-                'Enemy flashes yellow',
-                'Enemy flashes yellow briefly',
-                'Boss death animation'
-              ])
-            }, {
-              name: 'Arg2', // Usually a bitmask of the enemy to target
-              type: new UInt()
-            }, {
-              name: 'Arg3',
-              type: new UInt()
-            }])
-          },
-          0xFB: {
-            name: 'Miscellaneous',
-            type: new Fork({
-              control: new UInt(),
-              map: {
-                0x00: {
-                  name: 'Reset battle timer',
-                  type: new Fixed(0x00)
-                },
-                0x01: {
-                  name: 'Target becomes invincible',
-                  type: target_enum
-                },
-                0x02: {
-                  name: 'End battle',
-                  type: new Fixed(0x00)
-                },
-                0x03: {
-                  name: 'Add Gau to party',
-                  type: new Fixed(0x00)
-                },
-                0x04: {
-                  name: 'Reset global timer',
-                  type: new Fixed(0x00)
-                },
-                0x05: {
-                  name: 'Target loses invincibility',
-                  type: target_enum
-                },
-                0x06: {
-                  name: 'Target becomes targetable',
-                  type: target_enum
-                },
-                0x07: {
-                  name: 'Target becomes untargetable',
-                  type: target_enum
-                },
-                0x08: {
-                  name: 'Unknown-0x08',
-                  type: new UInt()
-                },
-                0x09: {
-                  name: 'End Battle with Gau Returning',
-                  type: new UInt()
-                },
-                0x0A: {
-                  name: 'Unknown-0x0A',
-                  type: new UInt()
-                },
-                0x0B: {
-                  name: 'Self gains status',
-                  type: status_enum
-                },
-                0x0C: {
-                  name: 'Self loses status',
-                  type: status_enum
-                },
-                0x0D: {
-                  name: 'Piranha death',
-                  type: new Fixed(0x00)
-                }
-              }
-            })
-          },
-          0xFC: {
-            name: 'Conditional',
-            type: new Fork({
-              control: new UInt(),
-              map: {
-                0x00: {
-                  // Null
-                },
-                0x01: {
-                  name: 'Hit by command',
-                  type: new List({ size: 2, type: command_enum })
-                },
-                0x02: {
-                  name: 'Hit by spell',
-                  type: new List({ size: 2, type: spell_enum }) 
-                },
-                0x03: {
-                  name: 'Hit by item',
-                  type: new List({ size: 2, type: item_enum })
-                },
-                0x04: {
-                  name: 'Hit by element',
-                  type: new Struct([
-                    { name: 'Elements', type: element_enum },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x05: {
-                  name: 'Hit at all',
-                  type: new Struct([
-                    { name: 'Unused', type: new Fixed(0x00) },
-                    { name: 'Hit Type', type: new Enum(['Any', 'Melee', 'MP Dmg']) } 
-                  ])
-                },
-                0x06: {
-                  name: 'Target HP < {x}',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'HP / 128', type: new UInt() }
-                  ])
-                },
-                0x07: {
-                  name: 'Target MP < {x}',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'MP', type: new UInt() }
-                  ])
-                },
-                0x08: {
-                  name: 'Target has status',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'Status', type: status_enum }
-                  ])
-                },
-                0x09: {
-                  name: 'Target lacks status',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'Status', type: status_enum }
-                  ])
-                },
-                0x0A: {
-                  // Null
-                },
-                0x0B: {
-                  name: 'Battle timer > {x}',
-                  type: new Struct([
-                    { name: 'Timer', type: new UInt() },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x0C: {
-                  name: 'Variable < {x}',
-                  type: new Struct([
-                    { name: 'VariableID', type: new UInt() },
-                    { name: 'Value', type: new UInt() }
-                  ])
-                },
-                0x0D: {
-                  name: 'Variable >= {x}',
-                  type: new Struct([
-                    { name: 'VariableID', type: new UInt() },
-                    { name: 'Value', type: new UInt() }
-                  ])
-                },
-                0x0E: {
-                  name: 'Target level < {x}',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'Level', type: new UInt() }
-                  ])
-                },
-                0x0F: {
-                  name: 'Target level >= {x}',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'Level', type: new UInt() }
-                  ])
-                },
-                0x10: {
-                  name: 'Only one enemy type alive',
-                  type: new List({ size: 2, type: new Fixed(0x00) })
-                },
-                0x11: {
-                  name: 'Enemies are alive',
-                  type: new Struct([
-                    { name: 'Enemies', type: enemy_bitmask },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x12: {
-                  name: 'Enemies are dead',
-                  type: new Struct([
-                    { name: 'Enemies', type: enemy_bitmask },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x13: {
-                  name: 'Entities alive <= {X}',
-                  type: new Struct([
-                    { name: 'Side', type: new Enum(['Allies', 'Enemies']) },
-                    { name: 'X', type: new UInt() }
-                  ])
-                },
-                0x14: {
-                  name: 'Bit is set',
-                  type: new Struct([
-                    { name: 'VariableID', type: new UInt() },
-                    { name: 'Bit', type: new UInt() }
-                  ])
-                },
-                0x15: {
-                  name: 'Bit is unset',
-                  type: new Struct([
-                    { name: 'VariableID', type: new UInt() },
-                    { name: 'Bit', type: new UInt() }
-                  ])
-                },
-                0x16: {
-                  name: 'Global battle timer > {x}',
-                  type: new Struct([
-                    { name: 'X', type: new UInt() },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x17: {
-                  name: 'Target is valid',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x18: {
-                  name: 'Gau not in party',
-                  type: new List({ size: 2, type: new Fixed(0x00) })
-                },
-                0x19: {
-                  name: 'Enemy in position',
-                  type: new Struct([
-                    { name: 'Enemies', type: enemy_bitmask },
-                    { name: 'Arg2', type: new Fixed(0x00) }
-                  ])
-                },
-                0x1A: {
-                  name: 'Target is weak to element',
-                  type: new Struct([
-                    { name: 'Target', type: target_enum },
-                    { name: 'Element', type: element_enum }
-                  ])
-                },
-                0x1B: {
-                  name: 'Battle formation = {X}',
-                  type: new UInt('word')
-                },
-                0x1C: {
-                  name: 'Ignore limited',
-                  type: new List({ size: 2, type: new Fixed(0x00) })
-                },
-                0xB5: {
-                  name: 'Unknown 0xB5',
-                  type: new UInt('word')
-                },
-                0x80: {
-                  name: 'Unknown 0x80',
-                  type: new UInt('word')
-                }
-              }
-            })
-          },
-          0xFD: {
-            name: 'Wait One Turn',
-            type: new Empty()
-          },
-          0xFE: {
-            name: 'End Conditional',
-            type: new Empty()
-          },
-          0xFF: {
-            name: 'End Script',
-            type: new Empty()
-          }
-        }
-      })
-    });
+const captions_enum = new types.RefEnum({
+  ref: 'battle_quips',
+  path: []
+});
 
-    this.type = new Reader({
-      offset: 0xCF8400,
-      type: new PointerTable({
-        size: 384,
-        offset: 0xCF8700,
-        warn: 0xCFC050,
-        type: new Struct([{
-          name: 'MainScript',
-          type: ai_script
+const command_enum = new types.RefEnum({
+  ref: 'command_names',
+  path: [],
+  inject: { 0xFE: '[empty]', 0xFF: '-' }
+});
+
+const ai_script = new types.List({
+  size: data => (data[data.length - 1] || {}).name === 'End Script',
+  type: new types.Fork({
+    control: new types.UInt(),
+    map: {
+      default: {
+        name: 'Use Spell',
+        use_control: true,
+        type: spell_enum
+      },
+      0xF0: {
+        name: 'Use Random Spell',
+        type: new types.List({ size: 3, type: spell_enum })
+      },
+      0xF1: {
+        name: 'Target',
+        type: target_enum
+      },
+      0xF2: {
+        name: 'Call Formation',
+        type: new types.List({ size: 3, type: new types.UInt() })
+      },
+      0xF3: {
+        name: 'Small Caption',
+        type: new types.Struct([{
+          name: 'Text',
+          type: captions_enum
         }, {
-          name: 'ReactiveScript',
-          type: ai_script
+          name: 'Unused',
+          type: new types.Fixed(0x00)
         }])
-      })
-    });
-  }
-}
+      },
+      0xF4: {
+        name: 'Use Random Command',
+        type: new types.List({ size: 3, type: command_enum })
+      },
+      0xF5: {
+        name: 'Add/Remove',
+        type: new types.Struct([{
+          name: 'AnimationID',
+          type: new types.Enum([
+            'Hide',
+            'Smoke',
+            'Up',
+            'Left',
+            'Little Splash',
+            'Up [dup]',
+            'Big Splash',
+            'Left [dup]',
+            'Disintegrate Down',
+            'Disintegrate Up',
+            'Melt',
+            'Disintegrate Left',
+            'Boss',
+            'Flutter',
+            'Chadarnook',
+            'Hide [dup-1]',
+            'Hide [dup-2]',
+            'Kefka'
+          ])
+        }, {
+          name: 'Mode',
+          type: new types.Enum([
+            'Unhide w/ max HP',
+            'Remove (preserve HP)',
+            'Unhide w/ current HP',
+            'Hide',
+            'Hide [dup]', // TODO: Rename (prevents battle end)
+            'Kill'
+          ])
+        }, {
+          name: 'Targets',
+          type: enemy_bitmask
+        }])
+      },
+      0xF6: {
+        name: 'Throw/Use Item',
+        type: new types.Struct([
+          { name: 'Mode', type: new types.Enum(['Use', 'Throw']) },
+          { name: 'Common (2/3)', type: item_enum },
+          { name: 'Rare (1/3)', type: item_enum }
+        ])
+      },
+      0xF7: {
+        name: 'Trigger Event',
+        type: new types.UInt()
+      },
+      0xF8: {
+        name: 'Variable Math',
+        type: new types.Struct([{
+          name: 'Variable ID',
+          type: new types.UInt()
+        }, {
+          name: 'Math',
+          type: new types.Bits([{
+            mask: 0xC0,
+            name: 'Operator',
+            type: new types.Enum(['Set', 'Set [dup]', 'Add', 'Subtract'])
+          }, {
+            mask: 0x3F,
+            name: 'Operand',
+            type: new types.UInt()
+          }])
+        }])
+      },
+      0xF9: {
+        name: 'Variable Bit',
+        type: new types.Struct([
+          { name: 'Operation', type: new types.Enum(['Toggle', 'Set', 'Unset']) },
+          { name: 'VariableID', type: new types.UInt() },
+          { name: 'BitID', type: new types.UInt() }
+        ])
+      },
+      0xFA: {
+        name: 'Animation',
+        type: new types.Struct([{
+          name: 'AnimationID',
+          type: new types.Enum([
+            'Enemy flashes red',
+            'Enemy steps back (slow)',
+            'Enemy steps forward (slow)',
+            'Enemy steps back (fast)',
+            'Enemy steps forward (fast)',
+            'Characters run to right',
+            'Characters run to left',
+            'Enemy steps back 3',
+            'Enemy steps forward 3',
+            'Play sound',
+            'Kefka head',
+            'Enemy flashes yellow',
+            'Enemy flashes yellow briefly',
+            'Boss death animation'
+          ])
+        }, {
+          name: 'Arg2', // Usually a bitmask of the enemy to target
+          type: new types.UInt()
+        }, {
+          name: 'Arg3',
+          type: new types.UInt()
+        }])
+      },
+      0xFB: {
+        name: 'Miscellaneous',
+        type: new types.Fork({
+          control: new types.UInt(),
+          map: {
+            0x00: {
+              name: 'Reset battle timer',
+              type: new types.Fixed(0x00)
+            },
+            0x01: {
+              name: 'Target becomes invincible',
+              type: target_enum
+            },
+            0x02: {
+              name: 'End battle',
+              type: new types.Fixed(0x00)
+            },
+            0x03: {
+              name: 'Add Gau to party',
+              type: new types.Fixed(0x00)
+            },
+            0x04: {
+              name: 'Reset global timer',
+              type: new types.Fixed(0x00)
+            },
+            0x05: {
+              name: 'Target loses invincibility',
+              type: target_enum
+            },
+            0x06: {
+              name: 'Target becomes targetable',
+              type: target_enum
+            },
+            0x07: {
+              name: 'Target becomes untargetable',
+              type: target_enum
+            },
+            0x08: {
+              name: 'Unknown-0x08',
+              type: new types.UInt()
+            },
+            0x09: {
+              name: 'End Battle with Gau Returning',
+              type: new types.UInt()
+            },
+            0x0A: {
+              name: 'Unknown-0x0A',
+              type: new types.UInt()
+            },
+            0x0B: {
+              name: 'Self gains status',
+              type: status_enum
+            },
+            0x0C: {
+              name: 'Self loses status',
+              type: status_enum
+            },
+            0x0D: {
+              name: 'Piranha death',
+              type: new types.Fixed(0x00)
+            }
+          }
+        })
+      },
+      0xFC: {
+        name: 'Conditional',
+        type: new types.Fork({
+          control: new types.UInt(),
+          map: {
+            0x00: {
+              // Null
+            },
+            0x01: {
+              name: 'Hit by command',
+              type: new types.List({ size: 2, type: command_enum })
+            },
+            0x02: {
+              name: 'Hit by spell',
+              type: new types.List({ size: 2, type: spell_enum }) 
+            },
+            0x03: {
+              name: 'Hit by item',
+              type: new types.List({ size: 2, type: item_enum })
+            },
+            0x04: {
+              name: 'Hit by element',
+              type: new types.Struct([
+                { name: 'Elements', type: element_enum },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x05: {
+              name: 'Hit at all',
+              type: new types.Struct([
+                { name: 'Unused', type: new types.Fixed(0x00) },
+                { name: 'Hit Type', type: new types.Enum(['Any', 'Melee', 'MP Dmg']) } 
+              ])
+            },
+            0x06: {
+              name: 'Target HP < {x}',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'HP / 128', type: new types.UInt() }
+              ])
+            },
+            0x07: {
+              name: 'Target MP < {x}',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'MP', type: new types.UInt() }
+              ])
+            },
+            0x08: {
+              name: 'Target has status',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'Status', type: status_enum }
+              ])
+            },
+            0x09: {
+              name: 'Target lacks status',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'Status', type: status_enum }
+              ])
+            },
+            0x0A: {
+              // Null
+            },
+            0x0B: {
+              name: 'Battle timer > {x}',
+              type: new types.Struct([
+                { name: 'Timer', type: new types.UInt() },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x0C: {
+              name: 'Variable < {x}',
+              type: new types.Struct([
+                { name: 'VariableID', type: new types.UInt() },
+                { name: 'Value', type: new types.UInt() }
+              ])
+            },
+            0x0D: {
+              name: 'Variable >= {x}',
+              type: new types.Struct([
+                { name: 'VariableID', type: new types.UInt() },
+                { name: 'Value', type: new types.UInt() }
+              ])
+            },
+            0x0E: {
+              name: 'Target level < {x}',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'Level', type: new types.UInt() }
+              ])
+            },
+            0x0F: {
+              name: 'Target level >= {x}',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'Level', type: new types.UInt() }
+              ])
+            },
+            0x10: {
+              name: 'Only one enemy type alive',
+              type: new types.List({ size: 2, type: new types.Fixed(0x00) })
+            },
+            0x11: {
+              name: 'Enemies are alive',
+              type: new types.Struct([
+                { name: 'Enemies', type: enemy_bitmask },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x12: {
+              name: 'Enemies are dead',
+              type: new types.Struct([
+                { name: 'Enemies', type: enemy_bitmask },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x13: {
+              name: 'Entities alive <= {X}',
+              type: new types.Struct([
+                { name: 'Side', type: new types.Enum(['Allies', 'Enemies']) },
+                { name: 'X', type: new types.UInt() }
+              ])
+            },
+            0x14: {
+              name: 'Bit is set',
+              type: new types.Struct([
+                { name: 'VariableID', type: new types.UInt() },
+                { name: 'Bit', type: new types.UInt() }
+              ])
+            },
+            0x15: {
+              name: 'Bit is unset',
+              type: new types.Struct([
+                { name: 'VariableID', type: new types.UInt() },
+                { name: 'Bit', type: new types.UInt() }
+              ])
+            },
+            0x16: {
+              name: 'Global battle timer > {x}',
+              type: new types.Struct([
+                { name: 'X', type: new types.UInt() },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x17: {
+              name: 'Target is valid',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x18: {
+              name: 'Gau not in party',
+              type: new types.List({ size: 2, type: new types.Fixed(0x00) })
+            },
+            0x19: {
+              name: 'Enemy in position',
+              type: new types.Struct([
+                { name: 'Enemies', type: enemy_bitmask },
+                { name: 'Arg2', type: new types.Fixed(0x00) }
+              ])
+            },
+            0x1A: {
+              name: 'Target is weak to element',
+              type: new types.Struct([
+                { name: 'Target', type: target_enum },
+                { name: 'Element', type: element_enum }
+              ])
+            },
+            0x1B: {
+              name: 'Battle formation = {X}',
+              type: new types.UInt('word')
+            },
+            0x1C: {
+              name: 'Ignore limited',
+              type: new types.List({ size: 2, type: new types.Fixed(0x00) })
+            },
+            0xB5: {
+              name: 'Unknown 0xB5',
+              type: new types.UInt('word')
+            },
+            0x80: {
+              name: 'Unknown 0x80',
+              type: new types.UInt('word')
+            }
+          }
+        })
+      },
+      0xFD: {
+        name: 'Wait One Turn',
+        type: new types.Empty()
+      },
+      0xFE: {
+        name: 'End Conditional',
+        type: new types.Empty()
+      },
+      0xFF: {
+        name: 'End Script',
+        type: new types.Empty()
+      }
+    }
+  })
+});
+
+module.exports = new types.Reader({
+  offset: 0xCF8400,
+  type: new types.PointerTable({
+    size: 384,
+    offset: 0xCF8700,
+    warn: 0xCFC050,
+    type: new types.Struct([{
+      name: 'MainScript',
+      type: ai_script
+    }, {
+      name: 'ReactiveScript',
+      type: ai_script
+    }])
+  })
+});
 
 /* Miscellaneous Helpers */
 
@@ -570,8 +555,3 @@ function range (start, length, format) {
   }
   return result;
 }
-
-/* Exports */
-
-module.exports = AIReader;
-
