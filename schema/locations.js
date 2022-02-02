@@ -146,11 +146,20 @@ module.exports = new types.File({
               type: new types.Transformer({
                 type: new types.Ref('formations'),
                 transform: function (formations) {
-                  return new types.EnumWord(formations.map(form => {
-                    return Array(6).fill().map((_, i) => {
+                  const seen = new Set();
+
+                  return new types.EnumWord(formations.map((form, f) => {
+                    const value = Array(6).fill().map((_, i) => {
                       const name = form.Enemies[`Monster-${i+1} ID`];
                       return name === '-' ? null : name;
                     }).filter(Boolean).join(',');
+
+                    if (seen.has(value)) {
+                      return `${f}:${value}`;
+                    } else {
+                      seen.add(value);
+                      return value;
+                    }
                   }));
                 }
               })
