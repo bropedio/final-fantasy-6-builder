@@ -18,8 +18,8 @@ module.exports = new types.File({
       })
     })
   }),
-  optimizer: function (api) {
-    const dialogues = api.fetch('script').data;
+  optimizer: function (raw_dtes, api) {
+    const dialogues = api.fetch('script', 'decoded');
     const chars = dialogues.flat().map(obj => {
       return obj.name === 'default' ? obj.data : 0x00;
     });
