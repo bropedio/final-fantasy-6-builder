@@ -114,8 +114,8 @@ const captions_enum = new types.RefEnum({
 });
 
 const command_enum = new types.RefEnum({
-  ref: 'command_names',
-  path: [],
+  ref: 'commands',
+  path: ['Name'],
   inject: { 0xFE: '[empty]', 0xFF: '-' }
 });
 

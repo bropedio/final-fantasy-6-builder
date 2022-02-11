@@ -37,8 +37,8 @@ module.exports = new types.File({
           type: new types.List({
             size: 4,
             type: new types.RefEnum({
-              ref: 'command_names',
-              path: [],
+              ref: 'commands',
+              path: ['Name'],
               inject: {
                 0xFE: 'DoNothing',
                 0xFF: '-'

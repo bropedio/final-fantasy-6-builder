@@ -27,5 +27,6 @@ module.exports = new types.Bits([{
     0x23: 'TODO-Targeting',
     0x02: 'Self',
     0x6B: '0x6B',
+    0xEF: 'Submenu'
   })
 }]);
