@@ -183,12 +183,9 @@ module.exports = new types.File({
                 else if (data === 0x30) {
                   output.type = 'absorb_hp';
                 }
-                else if (data === 0x20) {
-                  // Null
-                }
                 else if (data >= 0x20) {
                   output.type = 'boost_dmg';
-                  output.data = data - 0x20;
+                  output.data = `+${(data - 0x20 + 1)*50}%`;
                 }
                 else {
                   output.type = 'set_status';
@@ -209,7 +206,7 @@ module.exports = new types.File({
                 case undefined:
                   return 0x20;
                 case 'boost_dmg':
-                  return 0x20 | parseInt(json.data);
+                  return 0x20 | (parseInt(json.data.slice(1, -1))/50 - 1);
                 case 'set_status':
                   return statuses.status_enum.parse(json.data);
                 default:
