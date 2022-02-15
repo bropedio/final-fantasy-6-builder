@@ -176,17 +176,17 @@ module.exports = new types.File({
             mask: 0x02,
             type: new types.Bool()
           }, {
-            name: 'Show Attack Type?',
+            name: 'Hide Start Messages',
             mask: 0x04,
             type: new types.Bool()
           }, {
-            name: 'Hide Start Messages',
-            mask: 0x08,
-            type: new types.Bool()
-          }, {
             name: 'Battle Music',
-            mask: 0x70,
+            mask: 0x38,
             type: new types.UInt()
+          }, {
+            name: 'UNKNOWN 0x40',
+            mask: 0x40,
+            type: new types.Bool()
           }, {
             name: 'Continue Current Music',
             mask: 0x80,
