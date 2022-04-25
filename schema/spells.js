@@ -1,8 +1,8 @@
 "use strict";
 
 const { types } = require('rom-builder');
+const { statuses } = require('./lib/statuses');
 const elements = require('./lib/elements');
-const statuses = require('./lib/statuses').all_statuses;
 const table = require('./lib/name_table');
 
 /* Spells */
