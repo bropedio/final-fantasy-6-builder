@@ -115,7 +115,7 @@ function get_item_data (type_name) {
         'No Back/Pincer',
         'Fight -> Jump',
         'Magic -> X-Magic',
-        'Runic -> Shock',
+        'Sketch -> Control',
         'Slot -> GP Rain',
         'Steal -> Mug',
         'Jump More'
