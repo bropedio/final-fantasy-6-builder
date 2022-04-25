@@ -9,5 +9,7 @@
   },
   "author": "Bropedio",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "rom-builder": "github:bropedio/rom-builder"
+  }
 }
