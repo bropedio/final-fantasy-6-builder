@@ -43,9 +43,10 @@ const spell_data = new types.List({
     name: 'Element',
     type: elements
   }, {
-    name: 'Flags-1',
+    name: 'Flags',
     type: new types.Bitmask({
       flags: [
+        // Byte 1
         'Physical',
         'Instant Death',
         'Target Dead Only',
@@ -53,13 +54,9 @@ const spell_data = new types.List({
         'Randomize Target', 
         'Ignore Defense',
         'No Split Damage',
-        'Abort on Allies'
-      ]
-    })
-  }, {
-    name: 'Flags-2',
-    type: new types.Bitmask({
-      flags: [
+        'Abort on Allies',
+
+        // Byte 2
         'Usable on Field',
         'Unreflectable',
         'Learnable Lore',
@@ -67,13 +64,9 @@ const spell_data = new types.List({
         'Warps',
         'Retarget if Invalid',
         'Suicidal',
-        'MP Damage'
-      ]
-    })
-  }, {
-    name: 'Flags-3',
-    type: new types.Bitmask({
-      flags: [
+        'MP Damage',
+
+        // Byte 3
         'Heals',
         'Drains',
         'Lifts Status',
@@ -91,7 +84,7 @@ const spell_data = new types.List({
     name: 'Power',
     type: new types.UInt('byte', 10)
   }, {
-    name: 'Flags-4',
+    name: 'More Flags',
     type: new types.Bitmask({
       flags: [
         'Miss if Status Unchanged',
