@@ -159,19 +159,6 @@ module.exports = new types.File({
             type: new types.Custom({
               type: new types.UInt(),
               formatter: data => {
-
-              /* Potential Migration (needs asm)
-
-               20 10 08 04 02 01
-               20: boost/lift/absorb/mp or set status
-
-               boost dmg *or* lift status *or* absorb hp *or* absorb mp
-               10 08 04 02 01
-
-               set status
-               10 08 04 02 01
-              */
-
                 const output = {};
 
                 if (data > 0x31) {
