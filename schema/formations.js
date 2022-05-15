@@ -102,6 +102,15 @@ module.exports = new types.File({
       })
     })
   }, {
+    name: 'Magic Points',
+    type: new types.Reader({
+      offset: 0xDFB400,
+      type: new types.List({
+        size: 0x200,
+        type: new types.UInt('byte', 10)
+      })
+    })
+  }, {
     name: 'Data',
     type: new types.Reader({
       offset: 0xCF5900,
