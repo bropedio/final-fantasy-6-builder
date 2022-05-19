@@ -6,9 +6,9 @@
 
 ### Get started
 
-1. Install the single dependency (https://github.com/bropedio/rom-builder)
+1. Install the single dependency
 ```
-npm install
+npm install https://github.com/bropedio/rom-builder
 ```
 
 2. Dump the data from your legally-obtained ROM.sfc file
