@@ -48,7 +48,7 @@ module.exports = new types.Reader({
   offset: 0xED82F4,
   warn: 0xED8E5A,
   type: new SplitList({
-    size: 0x19E,
+    size: 0x19F,
     chunk_size: 5,
     offset: 0x00,
     type: new types.Fork({
