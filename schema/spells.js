@@ -111,7 +111,8 @@ const spell_data = new types.List({
 
 module.exports = new types.File({
   name: 'Spells',
-  extension: 'json',
+  extension: 'yaml',
+  index_key: '------------------------------------------------------- ID',
   type: new types.ParallelList([{
     name: 'Name',
     type: new types.FlatStruct([{
