@@ -67,12 +67,12 @@ module.exports = {
   0xBF: '?',
   0xC0: '/',
   0xC1: ':',
-  0xC2: '<close_quote>',
+  0xC2: '"',
   0xC3: "'",
   0xC4: '-',
   0xC5: '.',
   0xC6: ',',
-  0xC7: '<ellip>',
+  0xC7: '<...>',
   0xC8: ';',
   0xC9: '#',
   0xCA: '+',
@@ -82,7 +82,7 @@ module.exports = {
   0xCE: '~',
   0xCF: '*',
   0xD2: '=',
-  0xD3: '"',
+  0xD3: '`',
   0xD5: '<music>',
   0xD7: '<x>', // Multiplication sign [?]
   0xF0: '<+->', // PlusMinus sign [?]
