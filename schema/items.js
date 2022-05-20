@@ -386,7 +386,8 @@ function get_item_data (type_name) {
 
 module.exports = new types.File({
   name: 'Items',
-  extension: 'json',
+  extension: 'yaml',
+  index_key: '------------------------------------------------------ ID',
   type: new types.ParallelList([{
     name: 'Name',
     type: new types.Reader({
